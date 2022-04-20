@@ -2,6 +2,7 @@
   "name": "@legendapp/motion",
   "version": "1.0.3",
   "description": "legend-motion",
+  "sideEffects": false,
   "main": "dist/commonjs/",
   "module": "dist/module/",
   "types": "index.d.ts",
@@ -77,7 +78,7 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@legendapp/tools": "^1.0.0"
+    "@legendapp/tools": "^1.0.2"
   },
   "peerDependencies": {
     "react": ">=16",
