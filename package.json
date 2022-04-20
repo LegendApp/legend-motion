@@ -37,9 +37,14 @@
     "bootstrap": "npm run example && npm i && npm run pods"
   },
   "keywords": [
+    "react",
+    "native",
     "react-native",
-    "ios",
-    "android"
+    "animations",
+    "transitions",
+    "framer",
+    "motion",
+    "framer-motion"
   ],
   "repository": {
     "type": "git",
@@ -78,7 +83,7 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@legendapp/tools": "^1.0.2"
+    "@legendapp/tools": "^1.0.3"
   },
   "peerDependencies": {
     "react": ">=16",
