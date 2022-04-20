@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+      "paths": {
+          "@legendapp/motion": [
+            "../src/index"
+        ],
+        "@legendapp/motion": [
+            "../src/index"
+        ],
+        "@legendapp/motion/svg": [
+            "../src/svg"
+        ],
+        "@legendapp/motion/linear-gradient": [
+            "../src/linear-gradient"
+        ],
+        "@legendapp/motion/linear-gradient-expo": [
+            "../src/linear-gradient-expo"
+        ]
+    },
+  },
+  "extends": "expo/tsconfig.base"
+}

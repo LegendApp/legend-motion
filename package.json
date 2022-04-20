@@ -1,0 +1,164 @@
+{
+  "name": "@legendapp/motion",
+  "version": "1.0.0",
+  "description": "legend-motion",
+  "main": "dist/commonjs/",
+  "module": "dist/module/",
+  "types": "index.d.ts",
+  "react-native": "src/",
+  "source": "src/",
+  "exports": {
+    ".": "./index.js",
+    "./svg": "./svg.js",
+    "./linear-gradient": "./linear-gradient.js",
+    "./linear-gradient-expo": "./linear-gradient-expo.js"
+  },
+  "files": [
+    "src",
+    "lib",
+    "index.js",
+    "index.d.ts",
+    "svg.js",
+    "svg.d.ts",
+    "linear-gradient.js",
+    "linear-gradient.d.ts",
+    "linear-gradient-expo.js",
+    "linear-gradient-expo.d.ts"
+  ],
+  "scripts": {
+    "test": "jest",
+    "typescript": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "prepare": "bob build",
+    "release": "release-it",
+    "example": "cd example && npm i",
+    "pods": "cd example && pod-install --quiet",
+    "bootstrap": "npm run example && npm run && npm run pods"
+  },
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LegendApp/legend-motion.git"
+  },
+  "author": "Legend <contact@legendapp.com> (https://github.com/LegendApp)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LegendApp/legend-motion/issues"
+  },
+  "homepage": "https://github.com/LegendApp/legend-motion#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^16.2.1",
+    "@react-native-community/eslint-config": "^3.0.1",
+    "@release-it/conventional-changelog": "^4.3.0",
+    "@types/jest": "^27.0.3",
+    "@types/react": "^17.0.37",
+    "@types/react-native": "0.66.6",
+    "commitlint": "^16.2.3",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "expo-linear-gradient": "*",
+    "expo-modules-core": "*",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "pod-install": "^0.1.0",
+    "prettier": "^2.0.5",
+    "react-native-builder-bob": "^0.18.0",
+    "react-native-linear-gradient": "^2.5.6",
+    "react-native-svg": "^12.3.0",
+    "release-it": "^14.2.2",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "@legendapp/tools": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-native": "*"
+  },
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules",
+      "<rootDir>/lib/"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@react-native-community",
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "printWidth": 140,
+          "quoteProps": "consistent",
+          "singleQuote": true,
+          "tabWidth": 4,
+          "trailingComma": "es5",
+          "useTabs": false
+        }
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ],
+  "prettier": {
+    "quoteProps": "consistent",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
+  "directories": {
+    "example": "example",
+    "lib": "lib"
+  }
+}
