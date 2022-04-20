@@ -4,13 +4,13 @@ import type { LayoutChangeEvent, StyleProp } from 'react-native';
 export type ComponentStyle<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
     ComponentProps<T>['style'] extends StyleProp<infer P> ? P : ComponentProps<T>['style'];
 
-export interface TransitionTween {
-    type: 'tween';
+export interface MotionTransitionTween {
+    type: 'tween' | 'timing' | undefined;
     easing?: ((value: number) => number) | undefined;
     duration?: number | undefined;
     delay?: number | undefined;
 }
-export interface TransitionSpring {
+export interface MotionTransitionSpring {
     type: 'spring';
     friction?: number;
     tension?: number;
@@ -25,10 +25,10 @@ export interface TransitionSpring {
     velocity?: number | { x: number; y: number } | undefined;
 }
 
-export type Transition = TransitionTween | TransitionSpring;
+export type MotionTransition = MotionTransitionTween | MotionTransitionSpring;
 
-type TransitionRecord<T> = {
-    [key in keyof T]: Transition;
+export type MotionTransitionRecord<T> = {
+    [key in keyof T]: MotionTransition;
 };
 export type TransformOrigin = `${number}%` | number | `${number}px`;
 
@@ -38,7 +38,7 @@ export interface MotionComponentProps<T extends ComponentType<any>, TStyle exten
     animateProps?: TAnimateProps | ComponentProps<T>;
     initial?: TStyle | PropsTransforms;
     initialProps?: ComponentProps<T>;
-    transition?: Transition | TransitionRecord<TAnimate | TAnimateProps>;
+    transition?: MotionTransition | MotionTransitionRecord<TAnimate | TAnimateProps>;
     children?: ReactNode;
     onLayout?: (event: LayoutChangeEvent) => void;
     transformOrigin?: { x?: TransformOrigin; y?: TransformOrigin };

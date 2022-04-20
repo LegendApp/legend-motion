@@ -33,7 +33,7 @@
     "release": "release-it",
     "example": "cd example && npm i",
     "pods": "cd example && pod-install --quiet",
-    "bootstrap": "npm run example && npm run && npm run pods"
+    "bootstrap": "npm run example && npm i && npm run pods"
   },
   "keywords": [
     "react-native",

@@ -1,7 +1,7 @@
 import { isArray, isString, useMakeRef } from '@legendapp/tools';
 import React, { ComponentType, useCallback, useMemo, useRef } from 'react';
 import { Animated, StyleProp, StyleSheet, TransformsStyle } from 'react-native';
-import type { ComponentStyle, MotionComponentProps, PropsTransforms, Transition, UnionToIntersection } from './Interfaces';
+import type { ComponentStyle, MotionComponentProps, PropsTransforms, MotionTransition, UnionToIntersection } from './Interfaces';
 import { useTransformOrigin } from './useTransformOrigin';
 
 interface AnimInfo {
@@ -26,7 +26,7 @@ const TransformKeys: Record<keyof PropsTransforms, keyof UnionToIntersection<Tra
     matrix: 'matrix',
 };
 
-const DefaultTransition: Transition = { type: 'tween', duration: 300 };
+const DefaultTransition: MotionTransition = { type: 'tween', duration: 300 };
 
 export function createMotionComponent<T extends ComponentType<any>>(Component: Animated.AnimatedComponent<T> | T) {
     return function MotionComponent<TAnimate, TAnimateProps>({
@@ -96,7 +96,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                     anims[key].value = toValue = value as number;
                 }
 
-                const transitionForKey: Transition =
+                const transitionForKey: MotionTransition =
                     (isTransitionOnRoot ? transition : transition?.[key || 'default']) || DefaultTransition;
 
                 const useNativeDriver = !isProp && !!TransformKeys[key];
