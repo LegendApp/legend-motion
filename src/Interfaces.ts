@@ -5,7 +5,7 @@ export type ComponentStyle<T extends keyof JSX.IntrinsicElements | JSXElementCon
     ComponentProps<T>['style'] extends StyleProp<infer P> ? P : ComponentProps<T>['style'];
 
 export interface MotionTransitionTween {
-    type: 'tween' | 'timing' | undefined;
+    type?: 'tween' | 'timing' | undefined;
     easing?: ((value: number) => number) | undefined;
     duration?: number | undefined;
     delay?: number | undefined;
