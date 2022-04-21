@@ -39,10 +39,12 @@ const ExampleGradient = ({ value }: Props) => {
     return (
         <MotionLinearGradient
             style={styles.box}
-            colors={[value === 1 ? 'red' : 'blue', value === 1 ? 'pink' : 'yellow']}
-            locations={value ? [0, 1] : [0.25, 0.75]}
-            start={{ x: 0, y: 0 }}
-            end={value ? { x: 1, y: 0 } : { x: 1, y: 1 }}
+            locations={[0, 1]}
+            animateProps={{
+                colors: [value === 1 ? 'red' : 'blue', value === 1 ? 'pink' : 'yellow'],
+                start: { x: 0, y: 0 },
+                end: value ? { x: 1, y: 0 } : { x: 1, y: 1 },
+            }}
         />
     );
 };

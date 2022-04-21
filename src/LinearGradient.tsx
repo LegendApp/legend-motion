@@ -1,7 +1,8 @@
+import { isArray, MemoFnComponent } from '@legendapp/tools';
+import React, { Component, ComponentClass } from 'react';
+import type { ViewProps, ViewStyle } from 'react-native';
 import { createMotionAnimatedComponent } from './createMotionComponent';
-import { isArray } from '@legendapp/tools';
-import React, { Component } from 'react';
-import type { ViewProps } from 'react-native';
+import type { MotionComponentProps } from './Interfaces';
 
 export declare type LinearGradientPoint = {
     x: number;
@@ -9,7 +10,7 @@ export declare type LinearGradientPoint = {
 };
 
 export declare type LinearGradientProps = ViewProps & {
-    colors: string[];
+    colors?: string[];
     locations?: number[] | null;
     start?: LinearGradientPoint | null;
     end?: LinearGradientPoint | null;
@@ -33,6 +34,7 @@ class GradientHelper extends Component<PropsGradient> {
     render() {
         const { numColors, startX, startY, endX, endY, ...rest } = this.props;
 
+        // Combine startX, startY, endX, endY back into start,end
         let start;
         if (startX || startY) {
             start = {
@@ -48,6 +50,7 @@ class GradientHelper extends Component<PropsGradient> {
             };
         }
 
+        // Combine individual color props back into a colors array
         const colors: string[] = [];
         for (let i = 0; i < numColors; i++) {
             colors.push(rest['color' + i]);
@@ -60,24 +63,50 @@ class GradientHelper extends Component<PropsGradient> {
 
 const AnimatedGradientHelper = createMotionAnimatedComponent(GradientHelper);
 
-export class MotionLinearGradient extends Component<LinearGradientProps> {
-    render() {
-        const { colors, start, end, ...rest } = this.props;
-
-        const props: PropsGradient = {};
-        colors?.forEach((color, i) => (props['color' + i] = color));
-
-        if (start) {
-            props.startX = isArray(start) ? start[0] : (start as any).x;
-            props.startY = isArray(start) ? start[1] : (start as any).y;
-        }
-        if (end) {
-            props.endX = isArray(end) ? end[0] : (end as any).x;
-            props.endY = isArray(end) ? end[1] : (end as any).y;
-        }
-
-        return <AnimatedGradientHelper numColors={colors?.length || 0} animateProps={props} {...rest} />;
+function pointToXY(props: PropsGradient, point: LinearGradientPoint, name: string) {
+    if (point) {
+        props[name + 'X'] = isArray(point) ? point[0] : point.x;
+        props[name + 'Y'] = isArray(point) ? point[1] : point.y;
     }
 }
 
-export { setLinearGradientComponent };
+// Create MotionLinearGradient with the same API as other Motion components, but it's more complicated because it needs to
+// transform to a different set of props into the AnimatedGradientHelper.
+const MotionLinearGradient = MemoFnComponent(function <TAnimate, TAnimateProps extends Partial<Omit<LinearGradientProps, 'locations'>>>(
+    props: MotionComponentProps<ComponentClass<Omit<LinearGradientProps, 'locations'>>, ViewStyle, TAnimate, TAnimateProps, Omit<LinearGradientProps, 'locations'>> &
+        LinearGradientProps
+) {
+    const { colors, animateProps, start, end, initialProps, ...propsOut } = props;
+    const { colors: colorsAnimate, start: startAnimate, end: endAnimate, ...animatePropsOut } = animateProps as LinearGradientProps;
+
+    // Split colors array out into individual props so they can be animated
+    colors?.forEach((color, i) => (propsOut['color' + i] = color));
+    colorsAnimate?.forEach((color, i) => (animatePropsOut['color' + i] = color));
+
+    // Split start/end objects out into individual props so they can be animated
+    pointToXY(propsOut, start, 'start');
+    pointToXY(propsOut, end, 'end');
+
+    pointToXY(animatePropsOut, startAnimate, 'start');
+    pointToXY(animatePropsOut, endAnimate, 'end');
+
+    let numColors = colors?.length || colorsAnimate?.length || 0;
+
+    // Split initialProps too if it exists
+    const initialPropsOut: Partial<LinearGradientProps> = {};
+    if (initialProps) {
+        const { colors: colorsInitial, start: startInitial, end: endInitial } = animateProps as LinearGradientProps;
+        colorsInitial?.forEach((color, i) => (initialPropsOut['color' + i] = color));
+        pointToXY(initialPropsOut, startInitial, 'start');
+        pointToXY(initialPropsOut, endInitial, 'end');
+
+        if (colorsInitial) {
+            numColors = colorsInitial.length;
+        }
+    }
+
+    // @ts-ignore Ignore this because it won't conform to the customized props
+    return <AnimatedGradientHelper numColors={numColors} {...propsOut} initialProps={initialPropsOut} animateProps={animatePropsOut} />;
+});
+
+export { setLinearGradientComponent, MotionLinearGradient };
