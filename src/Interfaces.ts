@@ -35,9 +35,9 @@ export type TransformOrigin = `${number}%` | number | `${number}px`;
 export interface MotionComponentProps<T extends ComponentType<any>, TStyle extends ComponentStyle<T>, TAnimate, TAnimateProps, TExtraProps = unknown> {
     style?: ComponentProps<T>['style'];
     animate?: TAnimate | TStyle | PropsTransforms;
-    animateProps?: TAnimateProps | (ComponentProps<T> & TExtraProps);
+    animateProps?: TAnimateProps | (Omit<ComponentProps<T>, 'style'> & TExtraProps);
     initial?: TStyle | PropsTransforms;
-    initialProps?: ComponentProps<T> | TExtraProps;
+    initialProps?: Omit<ComponentProps<T>, 'style'> & TExtraProps;
     transition?: MotionTransition | MotionTransitionRecord<TAnimate | (TAnimateProps & TExtraProps)>;
     children?: ReactNode;
     onLayout?: (event: LayoutChangeEvent) => void;

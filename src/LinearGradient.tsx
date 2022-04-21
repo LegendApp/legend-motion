@@ -72,8 +72,8 @@ function pointToXY(props: PropsGradient, point: LinearGradientPoint, name: strin
 
 // Create MotionLinearGradient with the same API as other Motion components, but it's more complicated because it needs to
 // transform to a different set of props into the AnimatedGradientHelper.
-const MotionLinearGradient = MemoFnComponent(function <TAnimate, TAnimateProps extends Partial<Omit<LinearGradientProps, 'locations'>>>(
-    props: MotionComponentProps<ComponentClass<Omit<LinearGradientProps, 'locations'>>, ViewStyle, TAnimate, TAnimateProps, Omit<LinearGradientProps, 'locations'>> &
+const MotionLinearGradient = MemoFnComponent(function <TAnimate, TAnimateProps extends Partial<Omit<LinearGradientProps, 'locations' | 'style'>>>(
+    props: MotionComponentProps<ComponentClass<Omit<LinearGradientProps, 'locations'>>, ViewStyle, TAnimate, TAnimateProps, Omit<LinearGradientProps, 'locations' | 'style'>> &
         LinearGradientProps
 ) {
     const { colors, animateProps, start, end, initialProps, ...propsOut } = props;
