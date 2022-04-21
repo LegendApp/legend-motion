@@ -1,7 +1,7 @@
-import { isArray, isString, useMakeRef } from '@legendapp/tools';
-import React, { ComponentType, useCallback, useMemo, useRef } from 'react';
+import { isArray, isString } from '@legendapp/tools';
+import React, { ComponentType, useMemo, useRef } from 'react';
 import { Animated, StyleProp, StyleSheet, TransformsStyle } from 'react-native';
-import type { ComponentStyle, MotionComponentProps, PropsTransforms, MotionTransition, UnionToIntersection } from './Interfaces';
+import type { ComponentStyle, MotionComponentProps, MotionTransition, PropsTransforms, UnionToIntersection } from './Interfaces';
 import { useTransformOrigin } from './useTransformOrigin';
 
 interface AnimInfo {
@@ -30,38 +30,32 @@ const DefaultTransition: MotionTransition = { type: 'tween', duration: 300 };
 
 export function createMotionComponent<T extends ComponentType<any>>(Component: Animated.AnimatedComponent<T> | T) {
     return function MotionComponent<TAnimate, TAnimateProps>({
-        animate: _animate,
-        animateProps: _animateProps,
+        animate,
+        animateProps,
         initial,
         initialProps,
-        transition: _transition,
+        transition,
         transformOrigin,
         style: styleProp,
         onLayout: onLayoutProp,
         ...rest
     }: Animated.AnimatedProps<React.ComponentPropsWithRef<T>> & MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>) {
         const refAnims = useRef<Partial<Record<string, AnimInfo>>>({});
-        const _animKeys = _animate ? (Object.keys(_animate) as string[]) : [];
-        const _animValues = _animate ? (Object.values(_animate) as any[]) : [];
-        const refState = useMakeRef({
-            animKeys: _animKeys,
-            animate: _animate,
-            animateProps: _animateProps,
-            transition: _transition,
-        });
 
-        if (_animateProps) {
-            _animKeys.push(...Object.keys(_animateProps));
-            _animValues.push(...Object.values(_animateProps));
+        // Generate the arrays of keys and values for transitioning. These are used as deps of useMemo
+        // so that it will update whenever a key or value changes.
+        const animKeys = animate ? (Object.keys(animate) as string[]) : [];
+        const animValues = animate ? (Object.values(animate) as any[]) : [];
+        if (animateProps) {
+            animKeys.push(...Object.keys(animateProps));
+            animValues.push(...Object.values(animateProps));
         }
 
-        const update = useCallback(() => {
+        const update = () => {
             if (typeof __DEV__ !== 'undefined' && __DEV__) {
                 var isNativeAnimation;
             }
             const anims = refAnims.current;
-            const { animKeys, animate, animateProps, transition } = refState.current;
-            const isTransitionOnRoot = transition && !!(transition as any).type;
 
             for (let i = 0; i < animKeys.length; i++) {
                 const key = animKeys[i];
@@ -70,6 +64,8 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                 const valueInitial = (isProp ? initialProps?.[key] : initial?.[key]) ?? value;
                 const isStr = isString(valueInitial);
                 const isArr = isArray(valueInitial);
+
+                // If this is the first run or it's a new key, create the Animated.Value
                 if (!anims[key]) {
                     const startValue = isStr || isArr ? 1 : (valueInitial as number);
                     const animValue = new Animated.Value(startValue);
@@ -81,7 +77,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                 }
 
                 let toValue: number;
-                // If string it needs to interpolate, so toggle back and forth between 0 and 1,
+                // If string or array it needs to interpolate, so toggle back and forth between 0 and 1,
                 // interpolating from current value to target value
                 if (isStr || isArr) {
                     const fromInterp = anims[key].valueInterp;
@@ -96,9 +92,10 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                     anims[key].value = toValue = value as number;
                 }
 
-                const transitionForKey: MotionTransition =
-                    (isTransitionOnRoot ? transition : transition?.[key || 'default']) || DefaultTransition;
+                // Get the transition for this key, the 'default' key, the root transition, or default transition if no transition prop
+                const transitionForKey: MotionTransition = (transition?.[key || 'default']) || transition || DefaultTransition;
 
+                // Use native driver for any of the transform keys, but the rest do not support native animations
                 const useNativeDriver = !isProp && !!TransformKeys[key];
                 if (typeof __DEV__ !== 'undefined' && __DEV__ && isNativeAnimation !== undefined && useNativeDriver !== isNativeAnimation) {
                     console.warn('Cannot mix native and non-native animations');
@@ -125,16 +122,16 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                     });
                 }
             }
-        }, []); // eslint-disable-line react-hooks/exhaustive-deps
+        };
 
-        useMemo(update, [_animKeys, _animValues]); // eslint-disable-line react-hooks/exhaustive-deps
+        useMemo(update, [animKeys, animValues]); // eslint-disable-line react-hooks/exhaustive-deps
 
-        // Apply the animations
+        // Apply the animations to the style object
         const style: StyleProp<any> = {};
         const animProps = {};
         const transforms: { key: string; value: AnimInfo }[] = [];
         Object.entries(refAnims.current).forEach(([key, value]) => {
-            if (_animateProps?.[key] !== undefined) {
+            if (animateProps?.[key] !== undefined) {
                 animProps[key] = value.interpolation || value.animValue;
             } else if (TransformKeys[key]) {
                 transforms.push({ key, value });
