@@ -26,6 +26,10 @@ const TransformKeys: Record<keyof PropsTransforms, keyof UnionToIntersection<Tra
     matrix: 'matrix',
 };
 
+const OtherNativeKeys = {
+    opacity: 'opacity',
+} as const;
+
 const DefaultTransition: MotionTransition = { type: 'tween', duration: 300 };
 
 export function createMotionComponent<T extends ComponentType<any>>(Component: Animated.AnimatedComponent<T> | T) {
@@ -96,7 +100,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                 const transitionForKey: MotionTransition = (transition?.[key || 'default']) || transition || DefaultTransition;
 
                 // Use native driver for any of the transform keys, but the rest do not support native animations
-                const useNativeDriver = !isProp && !!TransformKeys[key];
+                const useNativeDriver = !isProp && (!!OtherNativeKeys[key] || !!TransformKeys[key]);
                 if (typeof __DEV__ !== 'undefined' && __DEV__ && isNativeAnimation !== undefined && useNativeDriver !== isNativeAnimation) {
                     console.warn('Cannot mix native and non-native animations');
                     isNativeAnimation = useNativeDriver;
