@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#666768',
         width: 150,
         height: 150,
-        borderRadius: 16,
+        borderRadius: 24,
         marginLeft: -100,
     },
     text: {
@@ -319,16 +319,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     button: {
-        height: 30,
-        paddingHorizontal: 8,
+        height: 36,
+        paddingHorizontal: 14,
         justifyContent: 'center',
     },
     buttonText: {
         fontSize: 16,
         textAlign: 'center',
+        color: '#323334',
     },
     buttonTextSelected: {
         fontWeight: 'bold',
-        color: 'blue',
+        color: '#09d',
     },
 });
