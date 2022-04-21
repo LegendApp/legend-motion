@@ -129,11 +129,10 @@
         "error",
         {
           "printWidth": 140,
-          "quoteProps": "consistent",
+          "semi": true,
           "singleQuote": true,
-          "tabWidth": 4,
           "trailingComma": "es5",
-          "useTabs": false
+          "tabWidth": 4
         }
       ]
     }
@@ -143,11 +142,11 @@
     "lib/"
   ],
   "prettier": {
-    "quoteProps": "consistent",
+    "printWidth": 140,
+    "semi": true,
     "singleQuote": true,
-    "tabWidth": 2,
     "trailingComma": "es5",
-    "useTabs": false
+    "tabWidth": 4
   },
   "react-native-builder-bob": {
     "source": "src",
