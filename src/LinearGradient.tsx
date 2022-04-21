@@ -36,14 +36,14 @@ class GradientHelper extends Component<PropsGradient> {
 
         // Combine startX, startY, endX, endY back into start,end
         let start;
-        if (startX || startY) {
+        if (startX !== undefined || startY !== undefined) {
             start = {
                 x: startX,
                 y: startY,
             };
         }
         let end;
-        if (endX || endY) {
+        if (endX !== undefined || endY !== undefined) {
             end = {
                 x: endX,
                 y: endY,
