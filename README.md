@@ -9,6 +9,9 @@ Legend Motion is a declarative animations library for React Native, to make it e
  />
 ```
 
+<a href="https://www.youtube.com/watch?v=cV8whnjLFFU"><img src="https://www.legendapp.com/img/legend-motion-video.png" width="300" /></a>
+
+
 ## Highlights
 
 - ✨ Supports react-native and react-native-web
@@ -32,7 +35,7 @@ The full documentation with live examples is on our [website](https://www.legend
 Legend Motion is created and maintained by [Jay Meistrich](https://github.com/jmeistrich) with [Legend](https://www.legendapp.com) and [Bravely](https://www.bravely.io).
 
 <p>
-  <img src="https://www.legendapp.com/img/LogoTextOnWhite.png" width="180" height="56" alt="Legend" />
+    <a href="https://www.legendapp.com"><img src="https://www.legendapp.com/img/LogoTextOnWhite.png" height="56" alt="Legend" /></a>
     <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <img src="https://www.legendapp.com/img/bravely-logo.png" width="210" height="56" alt="Bravely" />
+    <a href="https://www.bravely.io"><img src="https://www.legendapp.com/img/bravely-logo.png" height="56" alt="Bravely" /></a>
 </p>
