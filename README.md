@@ -2,7 +2,11 @@
 
 Legend Motion is a declarative animations library for React Native, to make it easy to transition between styles without needing to manage animations.
 
+`npm install @legendapp/motion` or `yarn add @legendapp/motion`
+
 ```jsx
+import { Motion } from "@legendapp/motion"
+
 <Motion.View
     initial={{ scale: 0.5 }}
     animate={{ scale: value ? 1 : 0.5 }}
