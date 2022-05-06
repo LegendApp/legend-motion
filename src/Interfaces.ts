@@ -4,9 +4,22 @@ import type { LayoutChangeEvent, StyleProp } from 'react-native';
 export type ComponentStyle<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
     ComponentProps<T>['style'] extends StyleProp<infer P> ? P : ComponentProps<T>['style'];
 
+export type EaseFunction =
+    | 'linear'
+    | 'easeIn'
+    | 'easeOut'
+    | 'easeInOut'
+    | 'circIn'
+    | 'circOut'
+    | 'circInOut'
+    | 'backIn'
+    | 'backOut'
+    | 'backInOut';
+
 export interface MotionTransitionTween {
     type?: 'tween' | 'timing' | undefined;
-    easing?: ((value: number) => number) | undefined;
+    ease?: EaseFunction | ((value: number) => number) | undefined;
+    easing?: EaseFunction | ((value: number) => number) | undefined;
     duration?: number | undefined;
     delay?: number | undefined;
 }
@@ -32,7 +45,13 @@ export type MotionTransitionRecord<T> = {
 };
 export type TransformOrigin = `${number}%` | number | `${number}px`;
 
-export interface MotionComponentProps<T extends ComponentType<any>, TStyle extends ComponentStyle<T>, TAnimate, TAnimateProps, TExtraProps = unknown> {
+export interface MotionComponentProps<
+    T extends ComponentType<any>,
+    TStyle extends ComponentStyle<T>,
+    TAnimate,
+    TAnimateProps,
+    TExtraProps = unknown
+> {
     style?: ComponentProps<T>['style'];
     animate?: TAnimate | TStyle | PropsTransforms;
     animateProps?: TAnimateProps | (Omit<ComponentProps<T>, 'style'> & TExtraProps);

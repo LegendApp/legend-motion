@@ -97,6 +97,56 @@ const Examples = {
             />
         ),
     },
+    Timing: {
+        code: `
+<Motion.View
+    animate={{
+        x: value * 100,
+    }}
+    transition={{
+        type: 'tween',
+        duration: 1000
+    }}
+/>`,
+        Component: ({ value }: Props) => (
+            <Motion.View
+                style={styles.box}
+                animate={{
+                    x: value * 100,
+                }}
+                transition={{
+                    type: 'tween',
+                    duration: 1000,
+                }}
+            />
+        ),
+    },
+    Easing: {
+        code: `
+<Motion.View
+    animate={{
+        x: value * 100,
+    }}
+    transition={{
+        type: 'tween',
+        duration: 1000,
+        easing: 'easeOut'
+    }}
+/>`,
+        Component: ({ value }: Props) => (
+            <Motion.View
+                style={styles.box}
+                animate={{
+                    x: value * 100,
+                }}
+                transition={{
+                    type: 'tween',
+                    duration: 1000,
+                    easing: 'easeOut',
+                }}
+            />
+        ),
+    },
     Initial: {
         code: `
 <Motion.View
@@ -160,7 +210,7 @@ const Examples = {
 `,
         Component: ({ value }: Props) => (
             <MotionLinearGradient
-                style={[styles.box, { marginLeft: 0 }] }
+                style={[styles.box, { marginLeft: 0 }]}
                 animateProps={{
                     colors: [value ? '#F81FEC' : 'blue', value ? '#59B0F8' : 'yellow'],
                     start: { x: 0, y: 0 },

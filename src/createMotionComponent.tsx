@@ -1,7 +1,16 @@
-import { isArray, isString } from '@legendapp/tools';
+import { isArray, isNumber, isString } from '@legendapp/tools';
 import React, { ComponentType, useMemo, useRef } from 'react';
-import { Animated, StyleProp, StyleSheet, TransformsStyle } from 'react-native';
-import type { ComponentStyle, MotionComponentProps, MotionTransition, PropsTransforms, UnionToIntersection } from './Interfaces';
+import { Animated, Easing, StyleProp, StyleSheet, TransformsStyle } from 'react-native';
+import { config } from './configureMotion';
+import type {
+    ComponentStyle,
+    MotionComponentProps,
+    MotionTransition,
+    PropsTransforms,
+    UnionToIntersection,
+    EaseFunction,
+    MotionTransitionTween,
+} from './Interfaces';
 import { useTransformOrigin } from './useTransformOrigin';
 
 interface AnimInfo {
@@ -31,6 +40,18 @@ const OtherNativeKeys = {
 } as const;
 
 const DefaultTransition: MotionTransition = { type: 'tween', duration: 300 };
+const Eases: Record<EaseFunction, (value: number) => number> = {
+    linear: Easing.linear,
+    easeIn: Easing.ease,
+    easeInOut: Easing.inOut(Easing.ease),
+    easeOut: Easing.out(Easing.ease),
+    circIn: Easing.circle,
+    circInOut: Easing.inOut(Easing.circle),
+    circOut: Easing.out(Easing.circle),
+    backIn: Easing.back(2),
+    backInOut: Easing.inOut(Easing.back(2)),
+    backOut: Easing.out(Easing.back(2)),
+};
 
 export function createMotionComponent<T extends ComponentType<any>>(Component: Animated.AnimatedComponent<T> | T) {
     return function MotionComponent<TAnimate, TAnimateProps>({
@@ -107,6 +128,15 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                     (transitionForKey as MotionTransitionTween).duration *= 1000;
                 }
 
+                if (isString((transitionForKey as MotionTransitionTween).easing)) {
+                    (transitionForKey as MotionTransitionTween).easing =
+                        Eases[(transitionForKey as MotionTransitionTween).easing as unknown as EaseFunction];
+                }
+                if (isString((transitionForKey as MotionTransitionTween).ease)) {
+                    (transitionForKey as MotionTransitionTween).ease =
+                        Eases[(transitionForKey as MotionTransitionTween).ease as unknown as EaseFunction];
+                }
+
                 // Use native driver for any of the transform keys, but the rest do not support native animations
                 const useNativeDriver = !isProp && (!!OtherNativeKeys[key] || !!TransformKeys[key]);
                 if (typeof __DEV__ !== 'undefined' && __DEV__ && isNativeAnimation !== undefined && useNativeDriver !== isNativeAnimation) {
@@ -129,7 +159,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                         if (transitionForKey.type === 'spring') {
                             Animated.spring(anims[key].animValue, animOptions).start();
                         } else {
-                            Animated.timing(anims[key].animValue, animOptions).start();
+                            Animated.timing(anims[key].animValue, animOptions as Animated.TimingAnimationConfig).start();
                         }
                     });
                 }
