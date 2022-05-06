@@ -97,7 +97,15 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                 }
 
                 // Get the transition for this key, the 'default' key, the root transition, or default transition if no transition prop
-                const transitionForKey: MotionTransition = (transition?.[key || 'default']) || transition || DefaultTransition;
+                const transitionForKey: MotionTransition = transition?.[key || 'default'] || transition || DefaultTransition;
+
+                if (
+                    config.times === 's' &&
+                    transitionForKey !== DefaultTransition &&
+                    isNumber((transitionForKey as MotionTransitionTween).duration)
+                ) {
+                    (transitionForKey as MotionTransitionTween).duration *= 1000;
+                }
 
                 // Use native driver for any of the transform keys, but the rest do not support native animations
                 const useNativeDriver = !isProp && (!!OtherNativeKeys[key] || !!TransformKeys[key]);
