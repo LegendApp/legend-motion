@@ -20,7 +20,7 @@ export interface MotionTransitionTween {
     type?: 'tween' | 'timing' | undefined;
     ease?: EaseFunction | ((value: number) => number) | undefined;
     easing?: EaseFunction | ((value: number) => number) | undefined;
-    duration?: number | undefined;
+    duration: number | undefined;
     delay?: number | undefined;
 }
 export interface MotionTransitionSpring {
