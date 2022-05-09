@@ -1,7 +1,7 @@
 import type { MotionConfig } from 'src/Interfaces';
 
 export const config: MotionConfig = {
-    times: 'ms',
+    timing: 'ms',
 };
 
 export const configureMotion = function configureMotion(configuration: MotionConfig) {

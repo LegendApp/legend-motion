@@ -121,7 +121,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                 const transitionForKey: MotionTransition = transition?.[key || 'default'] || transition || DefaultTransition;
 
                 if (
-                    config.times === 's' &&
+                    config.timing === 's' &&
                     transitionForKey !== DefaultTransition &&
                     isNumber((transitionForKey as MotionTransitionTween).duration)
                 ) {
