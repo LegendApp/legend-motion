@@ -77,10 +77,9 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
         }
 
         const update = () => {
-            if (typeof __DEV__ !== 'undefined' && __DEV__) {
-                var isNativeAnimation;
-            }
             const anims = refAnims.current;
+
+            const useNativeDriver = !animateProps && animKeys.every((key) => !!OtherNativeKeys[key] || !!TransformKeys[key]);
 
             for (let i = 0; i < animKeys.length; i++) {
                 const key = animKeys[i];
@@ -135,13 +134,6 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                 if (isString((transitionForKey as MotionTransitionTween).ease)) {
                     (transitionForKey as MotionTransitionTween).ease =
                         Eases[(transitionForKey as MotionTransitionTween).ease as unknown as EaseFunction];
-                }
-
-                // Use native driver for any of the transform keys, but the rest do not support native animations
-                const useNativeDriver = !isProp && (!!OtherNativeKeys[key] || !!TransformKeys[key]);
-                if (typeof __DEV__ !== 'undefined' && __DEV__ && isNativeAnimation !== undefined && useNativeDriver !== isNativeAnimation) {
-                    console.warn('Cannot mix native and non-native animations');
-                    isNativeAnimation = useNativeDriver;
                 }
 
                 const animOptions = Object.assign(
