@@ -1,3 +1,9 @@
+## 1.20
+
+### Features
+
+-   Added `whileTap` prop
+
 ## 1.1.0
 
 ### Features
