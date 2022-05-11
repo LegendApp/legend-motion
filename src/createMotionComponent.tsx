@@ -1,6 +1,7 @@
 import { isArray, isNumber, isString } from '@legendapp/tools';
-import React, { ComponentType, useMemo, useRef } from 'react';
+import React, { ComponentType, useMemo, useRef, useState } from 'react';
 import { Animated, Easing, StyleProp, StyleSheet, TransformsStyle } from 'react-native';
+import { MotionPressable } from './MotionPressable';
 import { config } from './configureMotion';
 import type {
     ComponentStyle,
@@ -35,6 +36,21 @@ const TransformKeys: Record<keyof PropsTransforms, keyof UnionToIntersection<Tra
     matrix: 'matrix',
 };
 
+const DefaultValues: Record<keyof PropsTransforms, any> = {
+    x: 0,
+    y: 0,
+    scale: 1,
+    scaleX: 1,
+    scaleY: 1,
+    skewX: 0,
+    skewY: 0,
+    perspective: 0,
+    rotate: 0,
+    rotateY: 0,
+    rotateZ: 0,
+    matrix: [],
+};
+
 const OtherNativeKeys = {
     opacity: 'opacity',
 } as const;
@@ -63,6 +79,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
         transformOrigin,
         style: styleProp,
         onLayout: onLayoutProp,
+        whileTap,
         ...rest
     }: Animated.AnimatedProps<React.ComponentPropsWithRef<T>> & MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>) {
         const refAnims = useRef<Partial<Record<string, AnimInfo>>>({});
@@ -76,6 +93,17 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
             animValues.push(...Object.values(animateProps));
         }
 
+        let setAnimsFromPress;
+        if (whileTap) {
+            const [animsFromPress, _setAnimsFromPress] = useState<TAnimate | ComponentStyle<T> | PropsTransforms>();
+            setAnimsFromPress = _setAnimsFromPress;
+
+            animKeys.push(...Object.keys(whileTap));
+            if (animsFromPress) {
+                animValues.push(...Object.values(animsFromPress));
+            }
+        }
+
         const update = () => {
             const anims = refAnims.current;
 
@@ -84,8 +112,8 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
             for (let i = 0; i < animKeys.length; i++) {
                 const key = animKeys[i];
                 const isProp = animateProps?.[key] !== undefined;
-                const value = isProp ? animateProps[key] : animate?.[key];
-                const valueInitial = (isProp ? initialProps?.[key] : initial?.[key]) ?? value;
+                const value = animValues[i] ?? DefaultValues[key];
+                const valueInitial = (isProp ? initialProps?.[key] : initial?.[key]) ?? value ?? DefaultValues[key];
                 const isStr = isString(valueInitial);
                 const isArr = isArray(valueInitial);
 
@@ -187,7 +215,15 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
             layoutProps.onLayout = useTransformOrigin(transformOrigin, style.transform, onLayoutProp);
         }
 
-        return <Component style={StyleSheet.compose(styleProp, style)} {...layoutProps} {...rest} {...animProps} />;
+        const component = <Component style={StyleSheet.compose(styleProp, style)} {...layoutProps} {...rest} {...animProps} />;
+
+        return whileTap ? (
+            <MotionPressable whileTap={whileTap} setAnimsFromPress={setAnimsFromPress}>
+                {component}
+            </MotionPressable>
+        ) : (
+            component
+        );
     };
 }
 export function createMotionAnimatedComponent<T extends ComponentType<any>>(component: T) {

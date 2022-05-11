@@ -61,6 +61,7 @@ export interface MotionComponentProps<
     children?: ReactNode;
     onLayout?: (event: LayoutChangeEvent) => void;
     transformOrigin?: { x?: TransformOrigin; y?: TransformOrigin };
+    whileTap?: TAnimate | TStyle | PropsTransforms;
 }
 export interface PropsTransforms {
     x?: number;

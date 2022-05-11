@@ -292,6 +292,29 @@ const Examples = {
             </MotionSvg.Svg>
         ),
     },
+    whileTap: {
+        code: `
+ <Motion.View
+    whileTap={{ scale: 1.1 }}
+    transition={{
+        type: 'spring',
+        damping: 20,
+        stiffness: 400,
+    }}
+/>
+`,
+        Component: ({ value }: Props) => (
+            <Motion.View
+                style={[styles.box, { marginLeft: 0 }]}
+                whileTap={{ scale: 1.1 }}
+                transition={{
+                    type: 'spring',
+                    damping: 20,
+                    stiffness: 400,
+                }}
+            />
+        ),
+    },
 };
 
 export default function App() {
