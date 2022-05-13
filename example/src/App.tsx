@@ -327,7 +327,7 @@ const Examples = {
                         stiffness: 400,
                     }}
                 >
-                    Hover me
+                    Press me
                 </Motion.Text>
             </Motion.View>
         ),

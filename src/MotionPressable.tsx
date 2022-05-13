@@ -1,6 +1,6 @@
 import { useMakeRef } from '@legendapp/tools';
 import React, { ReactNode, useCallback, useRef } from 'react';
-import { Pressable } from 'react-native';
+import { Platform, Pressable } from 'react-native';
 
 interface Props {
     whileTap: any;
@@ -30,9 +30,9 @@ export function MotionPressable({ whileTap, whileHover, setAnimsFromPress, child
             onPressIn={() => update(true, undefined)}
             onPressOut={() => update(false, undefined)}
             // @ts-ignore
-            onMouseEnter={(e) => update(undefined, true)}
+            onMouseEnter={Platform.OS === 'web' ? (e) => update(undefined, true) : undefined}
             // @ts-ignore
-            onMouseLeave={(e) => update(undefined, false)}
+            onMouseLeave={Platform.OS === 'web' ? (e) => update(undefined, false) : undefined}
         >
             {children}
         </Pressable>
