@@ -80,6 +80,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
         style: styleProp,
         onLayout: onLayoutProp,
         whileTap,
+        whileHover,
         ...rest
     }: Animated.AnimatedProps<React.ComponentPropsWithRef<T>> & MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>) {
         const refAnims = useRef<Partial<Record<string, AnimInfo>>>({});
@@ -88,18 +89,26 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
         // so that it will update whenever a key or value changes.
         const animKeys = animate ? (Object.keys(animate) as string[]) : [];
         const animValues = animate ? (Object.values(animate) as any[]) : [];
+        const values = Object.assign({}, animate);
         if (animateProps) {
             animKeys.push(...Object.keys(animateProps));
             animValues.push(...Object.values(animateProps));
+            Object.assign(values, animateProps);
         }
 
         let setAnimsFromPress;
-        if (whileTap) {
+        if (whileTap || whileHover) {
             const [animsFromPress, _setAnimsFromPress] = useState<TAnimate | ComponentStyle<T> | PropsTransforms>();
             setAnimsFromPress = _setAnimsFromPress;
 
-            animKeys.push(...Object.keys(whileTap));
+            if (whileTap) {
+                animKeys.push(...Object.keys(whileTap));
+            }
+            if (whileHover) {
+                animKeys.push(...Object.keys(whileHover));
+            }
             if (animsFromPress) {
+                Object.assign(values, animsFromPress);
                 animValues.push(...Object.values(animsFromPress));
             }
         }
@@ -112,7 +121,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
             for (let i = 0; i < animKeys.length; i++) {
                 const key = animKeys[i];
                 const isProp = animateProps?.[key] !== undefined;
-                const value = animValues[i] ?? DefaultValues[key];
+                const value = values[key] ?? DefaultValues[key];
                 const valueInitial = (isProp ? initialProps?.[key] : initial?.[key]) ?? value ?? DefaultValues[key];
                 const isStr = isString(valueInitial);
                 const isArr = isArray(valueInitial);
@@ -218,7 +227,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
         const component = <Component style={StyleSheet.compose(styleProp, style)} {...layoutProps} {...rest} {...animProps} />;
 
         return whileTap ? (
-            <MotionPressable whileTap={whileTap} setAnimsFromPress={setAnimsFromPress}>
+            <MotionPressable whileTap={whileTap} whileHover={whileHover} setAnimsFromPress={setAnimsFromPress}>
                 {component}
             </MotionPressable>
         ) : (

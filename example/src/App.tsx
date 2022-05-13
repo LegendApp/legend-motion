@@ -294,31 +294,48 @@ const Examples = {
     },
     whileTap: {
         code: `
- <Motion.View
-    whileTap={{ scale: 1.1 }}
-    transition={{
-        type: 'spring',
-        damping: 20,
-        stiffness: 400,
-    }}
-/>
+<Motion.View
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ y: 10 }}
+>
+    <Motion.Text
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ y: 10 }}
+    >
+        Hover me
+    </Motion.Text>
+</Motion.View>
 `,
         Component: ({ value }: Props) => (
             <Motion.View
-                style={[styles.box, { marginLeft: 0 }]}
-                whileTap={{ scale: 1.1 }}
+                style={[styles.box, { marginLeft: 0, justifyContent: 'center', alignItems: 'center' }]}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ y: 10 }}
                 transition={{
                     type: 'spring',
                     damping: 20,
                     stiffness: 400,
                 }}
-            />
+            >
+                <Motion.Text
+                    style={{ color: 'white' }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ y: 10 }}
+                    transition={{
+                        type: 'spring',
+                        damping: 20,
+                        stiffness: 400,
+                    }}
+                >
+                    Hover me
+                </Motion.Text>
+            </Motion.View>
         ),
     },
 };
 
 export default function App() {
-    const [selected, setSelected] = useState<keyof typeof Examples>('Simple');
+    const [selected, setSelected] = useState<keyof typeof Examples>('whileTap');
     const [value, setValue] = useState(0);
 
     useInterval(

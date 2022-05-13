@@ -62,6 +62,7 @@ export interface MotionComponentProps<
     onLayout?: (event: LayoutChangeEvent) => void;
     transformOrigin?: { x?: TransformOrigin; y?: TransformOrigin };
     whileTap?: TAnimate | TStyle | PropsTransforms;
+    whileHover?: TAnimate | TStyle | PropsTransforms;
 }
 export interface PropsTransforms {
     x?: number;
