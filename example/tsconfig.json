@@ -1,22 +1,25 @@
 {
-  "compilerOptions": {
-      "paths": {
-          "@legendapp/motion": [
-            "../src/index"
-        ],
-        "@legendapp/motion": [
-            "../src/index"
-        ],
-        "@legendapp/motion/svg": [
-            "../src/svg"
-        ],
-        "@legendapp/motion/linear-gradient": [
-            "../src/linear-gradient"
-        ],
-        "@legendapp/motion/linear-gradient-expo": [
-            "../src/linear-gradient-expo"
-        ]
+    "compilerOptions": {
+        "paths": {
+            "@legendapp/motion": [
+                "../src/index"
+            ],
+            "@legendapp/motion": [
+                "../src/index"
+            ],
+            "@legendapp/motion/svg": [
+                "../src/svg"
+            ],
+            "@legendapp/motion/linear-gradient": [
+                "../src/linear-gradient"
+            ],
+            "@legendapp/motion/linear-gradient-expo": [
+                "../src/linear-gradient-expo"
+            ],
+            "@legendapp/motion/styled": [
+                "../src/styled"
+            ]
+        },
     },
-  },
-  "extends": "expo/tsconfig.base"
+    "extends": "expo/tsconfig.base"
 }

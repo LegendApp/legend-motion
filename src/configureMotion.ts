@@ -1,4 +1,4 @@
-import type { MotionConfig } from 'src/Interfaces';
+import type { MotionConfig } from './Interfaces';
 
 export const config: MotionConfig = {
     timing: 'ms',

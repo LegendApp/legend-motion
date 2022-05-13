@@ -12,7 +12,8 @@
         ".": "./index.js",
         "./svg": "./svg.js",
         "./linear-gradient": "./linear-gradient.js",
-        "./linear-gradient-expo": "./linear-gradient-expo.js"
+        "./linear-gradient-expo": "./linear-gradient-expo.js",
+        "./styled": "./styled.js"
     },
     "files": [
         "src",
@@ -24,7 +25,9 @@
         "linear-gradient.js",
         "linear-gradient.d.ts",
         "linear-gradient-expo.js",
-        "linear-gradient-expo.d.ts"
+        "linear-gradient-expo.d.ts",
+        "styled.js",
+        "styled.d.ts"
     ],
     "scripts": {
         "test": "jest",
@@ -87,7 +90,8 @@
     },
     "peerDependencies": {
         "react": ">=16",
-        "react-native": "*"
+        "react-native": "*",
+        "tailwindcss-react-native": "^1.3.1"
     },
     "jest": {
         "preset": "react-native",

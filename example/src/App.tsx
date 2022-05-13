@@ -1,10 +1,15 @@
-import { Motion } from '@legendapp/motion';
+import { Motion, configureMotion } from '@legendapp/motion';
 import { MotionLinearGradient } from '@legendapp/motion/linear-gradient-expo';
+import { Motion as MotionStyled } from '@legendapp/motion/styled';
 import { MotionSvg } from '@legendapp/motion/svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
+import { styled, TailwindProvider } from 'tailwindcss-react-native';
 
+configureMotion({
+    styled,
+});
 interface Props {
     value: number;
 }
@@ -332,10 +337,34 @@ const Examples = {
             </Motion.View>
         ),
     },
+    Styled: {
+        code: `
+ <Motion.View
+    whileTap={{ scale: 1.1 }}
+    transition={{
+        type: 'spring',
+        damping: 20,
+        stiffness: 400,
+    }}
+/>
+`,
+        Component: ({ value }: Props) => (
+            <MotionStyled.View
+                style={{ marginLeft: -100 }}
+                className="w-32 h-32 bg-blue-500 rounded-xl"
+                animate={{ x: value * 100 }}
+                transition={{
+                    type: 'spring',
+                    damping: 20,
+                    stiffness: 400,
+                }}
+            />
+        ),
+    },
 };
 
 export default function App() {
-    const [selected, setSelected] = useState<keyof typeof Examples>('whileTap');
+    const [selected, setSelected] = useState<keyof typeof Examples>('Styled');
     const [value, setValue] = useState(0);
 
     useInterval(
@@ -352,7 +381,9 @@ export default function App() {
                 <Text style={styles.topBarText}>{selected}</Text>
             </View>
             <View style={styles.main}>
-                <Component value={value} />
+                <TailwindProvider>
+                    <Component value={value} />
+                </TailwindProvider>
                 <Text style={styles.text}>value: {value}</Text>
             </View>
             <View style={{ flex: 1 }}>

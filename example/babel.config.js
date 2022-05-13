@@ -17,6 +17,7 @@ module.exports = function (api) {
                     },
                 },
             ],
+            ['tailwindcss-react-native/babel', { mode: 'compileOnly' }],
         ],
     };
 };

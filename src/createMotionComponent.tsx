@@ -1,5 +1,5 @@
 import { isArray, isNumber, isString } from '@legendapp/tools';
-import React, { ComponentType, useMemo, useRef, useState } from 'react';
+import React, { ComponentPropsWithRef, ComponentType, useMemo, useRef, useState } from 'react';
 import { Animated, Easing, StyleProp, StyleSheet, TransformsStyle } from 'react-native';
 import { MotionPressable } from './MotionPressable';
 import { config } from './configureMotion';
@@ -82,7 +82,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
         whileTap,
         whileHover,
         ...rest
-    }: Animated.AnimatedProps<React.ComponentPropsWithRef<T>> & MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>) {
+    }: Animated.AnimatedProps<ComponentPropsWithRef<T>> & MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>) {
         const refAnims = useRef<Partial<Record<string, AnimInfo>>>({});
 
         // Generate the arrays of keys and values for transitioning. These are used as deps of useMemo

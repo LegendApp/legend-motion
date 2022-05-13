@@ -1,8 +1,26 @@
-import type { ComponentProps, ComponentType, JSXElementConstructor, ReactNode } from 'react';
-import type { LayoutChangeEvent, StyleProp } from 'react-native';
+import type {
+    ComponentClass,
+    ComponentProps,
+    ComponentType,
+    FunctionComponent,
+    JSXElementConstructor,
+    PropsWithChildren,
+    ReactNode,
+} from 'react';
+import type { ImageStyle, LayoutChangeEvent, StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 export type ComponentStyle<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
     ComponentProps<T>['style'] extends StyleProp<infer P> ? P : ComponentProps<T>['style'];
+
+export type StyledProps<P> = PropsWithChildren<
+    P & {
+        className?: string;
+        inheritedClassName?: string;
+        nthChild?: number;
+        tw?: string;
+        style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
+    }
+>;
 
 export type EaseFunction =
     | 'linear'
@@ -79,6 +97,8 @@ export interface PropsTransforms {
     matrix?: number[];
 }
 export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
+declare type Component<P> = string | FunctionComponent<P> | ComponentClass<P>;
 export interface MotionConfig {
-    timing: 'ms' | 's';
+    timing?: 'ms' | 's';
+    styled?: <P>(Component: Component<P>) => FunctionComponent<StyledProps<P>>;
 }
