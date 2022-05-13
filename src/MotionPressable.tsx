@@ -27,12 +27,12 @@ export function MotionPressable({ whileTap, whileHover, setAnimsFromPress, child
 
     return (
         <Pressable
-            onPressIn={() => update(true, undefined)}
-            onPressOut={() => update(false, undefined)}
+            onPressIn={whileTap ? () => update(true, undefined) : undefined}
+            onPressOut={whileTap ? () => update(false, undefined) : undefined}
             // @ts-ignore
-            onMouseEnter={Platform.OS === 'web' ? (e) => update(undefined, true) : undefined}
+            onMouseEnter={whileHover && Platform.OS === 'web' ? (e) => update(undefined, true) : undefined}
             // @ts-ignore
-            onMouseLeave={Platform.OS === 'web' ? (e) => update(undefined, false) : undefined}
+            onMouseLeave={whileHover && Platform.OS === 'web' ? (e) => update(undefined, false) : undefined}
         >
             {children}
         </Pressable>
