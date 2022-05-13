@@ -21,7 +21,7 @@ export function MotionPressable({ whileTap, whileHover, setAnimsFromPress, child
         }
         const { whileTap, whileHover } = refWhileTap.current;
         setAnimsFromPress(
-            Object.assign({}, refState.current.pressed ? whileTap : undefined, refState.current.hovered ? whileHover : undefined)
+            Object.assign({}, refState.current.hovered ? whileHover : undefined, refState.current.pressed ? whileTap : undefined)
         );
     }, []);
 
