@@ -1,6 +1,6 @@
 ## 1.4.0
 
--   Added styled components. Import from `@legendapp/motion/styled`. See https://legendapp.com/dev/motion/tailwind-css/ for more info.
+-   Added styled components using [tailwindcss-react-native](https://github.com/marklawlor/tailwindcss-react-native). Import from `@legendapp/motion/styled`. See https://legendapp.com/dev/motion/tailwind-css/ for more info.
 
 ## 1.3.0
 
