@@ -1,9 +1,28 @@
 {
     "compilerOptions": {
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "esModuleInterop": true,
+        "importsNotUsedAsValues": "error",
+        "forceConsistentCasingInFileNames": true,
+        "allowSyntheticDefaultImports": true,
+        "jsx": "react",
+        "lib": [
+            "es2015"
+        ],
+        "module": "es2015",
+        "moduleResolution": "node",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
+        "noImplicitUseStrict": false,
+        "noStrictGenericChecks": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "strict": false,
+        "target": "esnext",
         "paths": {
-            "@legendapp/motion": [
-                "../src/index"
-            ],
             "@legendapp/motion": [
                 "../src/index"
             ],
