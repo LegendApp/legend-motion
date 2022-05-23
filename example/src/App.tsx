@@ -364,7 +364,7 @@ const Examples = {
 };
 
 export default function App() {
-    const [selected, setSelected] = useState<keyof typeof Examples>('Styled');
+    const [selected, setSelected] = useState<keyof typeof Examples>('Simple');
     const [value, setValue] = useState(0);
 
     useInterval(
