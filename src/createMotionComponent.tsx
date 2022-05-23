@@ -226,7 +226,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
 
         const component = <Component style={StyleSheet.compose(styleProp, style)} {...layoutProps} {...rest} {...animProps} />;
 
-        return whileTap ? (
+        return whileTap || whileHover ? (
             <MotionPressable whileTap={whileTap} whileHover={whileHover} setAnimsFromPress={setAnimsFromPress}>
                 {component}
             </MotionPressable>

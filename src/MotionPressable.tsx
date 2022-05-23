@@ -9,7 +9,7 @@ interface Props {
     children: ReactNode;
 }
 export function MotionPressable({ whileTap, whileHover, setAnimsFromPress, children }: Props) {
-    const refWhileTap = useMakeRef({ whileTap, whileHover });
+    const refArgs = useMakeRef({ whileTap, whileHover });
     const refState = useRef({ pressed: false, hovered: false });
 
     const update = useCallback((pressed: boolean, hovered: boolean) => {
@@ -19,7 +19,7 @@ export function MotionPressable({ whileTap, whileHover, setAnimsFromPress, child
         if (hovered !== undefined) {
             refState.current.hovered = hovered;
         }
-        const { whileTap, whileHover } = refWhileTap.current;
+        const { whileTap, whileHover } = refArgs.current;
         setAnimsFromPress(
             Object.assign({}, refState.current.hovered ? whileHover : undefined, refState.current.pressed ? whileTap : undefined)
         );
