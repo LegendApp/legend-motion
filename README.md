@@ -8,20 +8,23 @@ Legend Motion is a declarative animations library for React Native, to make it e
 import { Motion } from "@legendapp/motion"
 
 <Motion.View
-    initial={{ scale: 0.5 }}
-    animate={{ scale: value ? 1 : 0.5 }}
- />
+    initial={{ y: -50 }}
+    animate={{ x: value * 100, y: 0 }}
+    whileHover={{ scale: 1.2 }}
+    whileTap={{ y: 20 }}
+    transition={{ type: 'spring' }}
+/>
 ```
 
 <a href="https://www.youtube.com/watch?v=cV8whnjLFFU"><img src="https://www.legendapp.com/img/legend-motion-video.png" width="300" /></a>
 
-
 ## Highlights
 
 - ✨ Supports react-native and react-native-web
-- ✨ API similar to Framer Motion for easy mixing of React Native Web with React
+- ✨ API similar to Framer Motion for easy mixing of React Native with React
 - ✨ Supports animating SVG and linear gradient
 - ✨ Supports transformOrigin
+- ✨ whileHover and whileTap for easy animations on touch
 - ✨ 0 dependencies using the built-in Animated
 - ✨ Built for maximum performance
 - ✨ Strongly typed with TypeScript
