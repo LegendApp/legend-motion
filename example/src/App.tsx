@@ -1,4 +1,4 @@
-import { Motion, configureMotion } from '@legendapp/motion';
+import { Motion, configureMotion, AnimatePresence } from '@legendapp/motion';
 import { MotionLinearGradient } from '@legendapp/motion/linear-gradient-expo';
 import { Motion as MotionStyled } from '@legendapp/motion/styled';
 import { MotionSvg } from '@legendapp/motion/svg';
@@ -351,6 +351,45 @@ const Examples = {
             />
         ),
     },
+    Presence: {
+        code: `
+ <Motion.View
+    whileTap={{ scale: 1.1 }}
+    transition={{
+        type: 'spring',
+        damping: 20,
+        stiffness: 400,
+    }}
+/>
+`,
+        Component: ({ value }: Props) => (
+            <View style={{ height: 140 }}>
+                <AnimatePresence>
+                    {value ? (
+                        <MotionStyled.View
+                            key="A"
+                            style={{ marginLeft: -100 }}
+                            className="w-32 h-32 bg-blue-500 rounded-xl"
+                            initial={{ opacity: 0.5, x: 0 }}
+                            animate={{ opacity: 1, x: 100 }}
+                            exit={{ opacity: 0.1, x: 0, y: 20 }}
+                            transition={{
+                                x: {
+                                    type: 'spring',
+                                    damping: 20,
+                                    stiffness: 400,
+                                },
+                                opacity: {
+                                    type: 'timing',
+                                    duration: 300,
+                                },
+                            }}
+                        />
+                    ) : null}
+                </AnimatePresence>
+            </View>
+        ),
+    },
 };
 
 export default function App() {
@@ -361,7 +400,7 @@ export default function App() {
         useCallback(() => {
             setValue((v) => (v === 0 ? 1 : 0));
         }, []),
-        1500
+        1800
     );
 
     const { code, Component } = Examples[selected];

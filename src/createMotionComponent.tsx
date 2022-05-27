@@ -2,6 +2,7 @@ import { isArray, isNumber, isString } from '@legendapp/tools';
 import React, { ComponentPropsWithRef, ComponentType, useContext, useMemo, useRef } from 'react';
 import { Animated, Easing, StyleProp, StyleSheet, TransformsStyle } from 'react-native';
 import { config } from './configureMotion';
+import { DefaultTransitionTime } from './Constants';
 import type {
     ComponentStyle,
     EaseFunction,
@@ -36,7 +37,11 @@ const TransformKeys: Record<keyof PropsTransforms, keyof UnionToIntersection<Tra
     matrix: 'matrix',
 };
 
-const DefaultValues: Record<keyof PropsTransforms, any> = {
+const OtherNativeKeys = {
+    opacity: 'opacity',
+} as const;
+
+const DefaultValues: Record<keyof PropsTransforms | keyof typeof OtherNativeKeys, any> = {
     x: 0,
     y: 0,
     scale: 1,
@@ -49,13 +54,10 @@ const DefaultValues: Record<keyof PropsTransforms, any> = {
     rotateY: 0,
     rotateZ: 0,
     matrix: [],
+    opacity: 1,
 };
 
-const OtherNativeKeys = {
-    opacity: 'opacity',
-} as const;
-
-const DefaultTransition: MotionTransition = { type: 'tween', duration: 300 };
+const DefaultTransition: MotionTransition = { type: 'tween', duration: DefaultTransitionTime };
 const Eases: Record<EaseFunction, (value: number) => number> = {
     linear: Easing.linear,
     easeIn: Easing.ease,
@@ -82,12 +84,14 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
         animateProps,
         initial,
         initialProps,
+        exit,
         transition,
         transformOrigin,
         style: styleProp,
         onLayout: onLayoutProp,
         whileTap,
         whileHover,
+        onAnimationComplete,
         ...rest
     }: Animated.AnimatedProps<ComponentPropsWithRef<T>> & MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>) {
         const refAnims = useRef<Partial<Record<string, AnimInfo>>>({});
@@ -117,6 +121,10 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                     Object.assign(values, whileTap);
                 }
             }
+        }
+
+        if (exit) {
+            addKeysToSet(animKeysSet, exit);
         }
 
         const animKeys = [...animKeysSet];

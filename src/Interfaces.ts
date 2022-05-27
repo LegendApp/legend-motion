@@ -81,6 +81,8 @@ export interface MotionComponentProps<
     transformOrigin?: { x?: TransformOrigin; y?: TransformOrigin };
     whileTap?: TAnimate | TStyle | PropsTransforms;
     whileHover?: TAnimate | TStyle | PropsTransforms;
+    exit?: TAnimate | TStyle | PropsTransforms;
+    onAnimationComplete?: (key: string) => void;
 }
 export interface PropsTransforms {
     x?: number;
