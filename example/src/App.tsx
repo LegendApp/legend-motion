@@ -299,31 +299,21 @@ const Examples = {
     },
     whileTap: {
         code: `
-<Motion.View
-    whileHover={{ scale: 1.1 }}
-    whileTap={{ y: 10 }}
->
-    <Motion.Text
+<MotionPressable>
+    <Motion.View
         whileHover={{ scale: 1.1 }}
         whileTap={{ y: 10 }}
     >
-        Hover me
-    </Motion.Text>
-</Motion.View>
+        <Text>
+            Press me
+        </Text>
+    </Motion.View>
+</MotionPressable>
 `,
-        Component: ({ value }: Props) => (
-            <Motion.View
-                style={[styles.box, { marginLeft: 0, justifyContent: 'center', alignItems: 'center' }]}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ y: 10 }}
-                transition={{
-                    type: 'spring',
-                    damping: 20,
-                    stiffness: 400,
-                }}
-            >
-                <Motion.Text
-                    style={{ color: 'white' }}
+        Component: () => (
+            <Motion.Pressable>
+                <Motion.View
+                    style={[styles.box, { marginLeft: 0, justifyContent: 'center', alignItems: 'center' }]}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ y: 10 }}
                     transition={{
@@ -332,9 +322,9 @@ const Examples = {
                         stiffness: 400,
                     }}
                 >
-                    Press me
-                </Motion.Text>
-            </Motion.View>
+                    <Text style={{ color: 'white' }}>Press me</Text>
+                </Motion.View>
+            </Motion.Pressable>
         ),
     },
     Styled: {

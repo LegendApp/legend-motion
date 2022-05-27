@@ -1,17 +1,17 @@
 import { isArray, isNumber, isString } from '@legendapp/tools';
-import React, { ComponentPropsWithRef, ComponentType, useMemo, useRef, useState } from 'react';
+import React, { ComponentPropsWithRef, ComponentType, useContext, useMemo, useRef } from 'react';
 import { Animated, Easing, StyleProp, StyleSheet, TransformsStyle } from 'react-native';
-import { MotionPressable } from './MotionPressable';
 import { config } from './configureMotion';
 import type {
     ComponentStyle,
+    EaseFunction,
     MotionComponentProps,
     MotionTransition,
+    MotionTransitionTween,
     PropsTransforms,
     UnionToIntersection,
-    EaseFunction,
-    MotionTransitionTween,
 } from './Interfaces';
+import { ContextPressable } from './MotionPressable';
 import { useTransformOrigin } from './useTransformOrigin';
 
 interface AnimInfo {
@@ -90,16 +90,15 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
         const animKeys = animate ? (Object.keys(animate) as string[]) : [];
         const animValues = animate ? (Object.values(animate) as any[]) : [];
         const values = Object.assign({}, animate);
+
         if (animateProps) {
             animKeys.push(...Object.keys(animateProps));
             animValues.push(...Object.values(animateProps));
             Object.assign(values, animateProps);
         }
 
-        let setAnimsFromPress;
         if (whileTap || whileHover) {
-            const [animsFromPress, _setAnimsFromPress] = useState<TAnimate | ComponentStyle<T> | PropsTransforms>();
-            setAnimsFromPress = _setAnimsFromPress;
+            const { pressed, hovered } = useContext(ContextPressable);
 
             if (whileTap) {
                 animKeys.push(...Object.keys(whileTap));
@@ -107,9 +106,13 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
             if (whileHover) {
                 animKeys.push(...Object.keys(whileHover));
             }
-            if (animsFromPress) {
-                Object.assign(values, animsFromPress);
-                animValues.push(...Object.values(animsFromPress));
+            if (hovered) {
+                Object.assign(values, whileHover);
+                animValues.push(...Object.values(whileHover));
+            }
+            if (pressed) {
+                Object.assign(values, whileTap);
+                animValues.push(...Object.values(whileTap));
             }
         }
 
@@ -224,15 +227,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
             layoutProps.onLayout = useTransformOrigin(transformOrigin, style.transform, onLayoutProp);
         }
 
-        const component = <Component style={StyleSheet.compose(styleProp, style)} {...layoutProps} {...rest} {...animProps} />;
-
-        return whileTap || whileHover ? (
-            <MotionPressable whileTap={whileTap} whileHover={whileHover} setAnimsFromPress={setAnimsFromPress}>
-                {component}
-            </MotionPressable>
-        ) : (
-            component
-        );
+        return <Component style={StyleSheet.compose(styleProp, style)} {...layoutProps} {...rest} {...animProps} />;
     };
 }
 export function createMotionAnimatedComponent<T extends ComponentType<any>>(component: T) {

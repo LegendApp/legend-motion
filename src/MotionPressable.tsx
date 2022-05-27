@@ -1,40 +1,52 @@
-import { useMakeRef } from '@legendapp/tools';
-import React, { ReactNode, useCallback, useRef } from 'react';
-import { Platform, Pressable } from 'react-native';
+import React, { createContext, useCallback, useState } from 'react';
+import { Platform, Pressable, PressableProps } from 'react-native';
 
-interface Props {
-    whileTap: any;
-    whileHover: any;
-    setAnimsFromPress: (a: any) => void;
-    children: ReactNode;
-}
-export function MotionPressable({ whileTap, whileHover, setAnimsFromPress, children }: Props) {
-    const refArgs = useMakeRef({ whileTap, whileHover });
-    const refState = useRef({ pressed: false, hovered: false });
+export const ContextPressable = createContext({ pressed: false, hovered: false });
+
+export function MotionPressable(props: PressableProps) {
+    // @ts-ignore Web props cause errors
+    const { onPressIn, onPressOut, onMouseEnter, onMouseLeave, children, ...rest } = props;
+
+    const [state, setState] = useState({ pressed: false, hovered: false });
 
     const update = useCallback((pressed: boolean, hovered: boolean) => {
-        if (pressed !== undefined) {
-            refState.current.pressed = pressed;
-        }
-        if (hovered !== undefined) {
-            refState.current.hovered = hovered;
-        }
-        const { whileTap, whileHover } = refArgs.current;
-        setAnimsFromPress(
-            Object.assign({}, refState.current.hovered ? whileHover : undefined, refState.current.pressed ? whileTap : undefined)
-        );
+        setState((cur) => ({
+            pressed: pressed ?? cur.pressed,
+            hovered: hovered ?? cur.hovered,
+        }));
     }, []);
 
     return (
         <Pressable
-            onPressIn={whileTap ? () => update(true, undefined) : undefined}
-            onPressOut={whileTap ? () => update(false, undefined) : undefined}
+            onPressIn={(e) => {
+                update(true, undefined);
+                onPressIn?.(e);
+            }}
+            onPressOut={(e) => {
+                update(false, undefined);
+                onPressOut?.(e);
+            }}
             // @ts-ignore
-            onMouseEnter={whileHover && Platform.OS === 'web' ? (e) => update(undefined, true) : undefined}
+            onMouseEnter={
+                Platform.OS === 'web'
+                    ? (e) => {
+                          update(undefined, true);
+                          onMouseEnter?.(e);
+                      }
+                    : undefined
+            }
             // @ts-ignore
-            onMouseLeave={whileHover && Platform.OS === 'web' ? (e) => update(undefined, false) : undefined}
+            onMouseLeave={
+                Platform.OS === 'web'
+                    ? (e) => {
+                          update(undefined, false);
+                          onMouseLeave?.(e);
+                      }
+                    : undefined
+            }
+            {...rest}
         >
-            {children}
+            <ContextPressable.Provider value={state}>{children}</ContextPressable.Provider>
         </Pressable>
     );
 }
