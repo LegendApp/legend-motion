@@ -33,6 +33,10 @@ import { Motion } from "@legendapp/motion"
 
 The full documentation with live examples is on our [website](https://www.legendapp.com/dev/motion).
 
+## Upgrading from 1.x
+
+- `whileTap` and `whileHover` props now require a `Motion.Pressable` ancestor, which is uses for tracking whether it is hovered or pressed. See [the example](https://www.legendapp.com/dev/motion/overview/#gestures).
+
 ## 👩‍⚖️ License
 
 [MIT](LICENSE)
