@@ -69,6 +69,13 @@ const Eases: Record<EaseFunction, (value: number) => number> = {
     backOut: Easing.out(Easing.back(2)),
 };
 
+function addKeysToSet(set: Set<string>, obj: Record<string, any>) {
+    const keys = Object.keys(obj);
+    for (let i = 0; i < keys.length; i++) {
+        set.add(keys[i]);
+    }
+}
+
 export function createMotionComponent<T extends ComponentType<any>>(Component: Animated.AnimatedComponent<T> | T) {
     return function MotionComponent<TAnimate, TAnimateProps>({
         animate,
@@ -87,34 +94,33 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
 
         // Generate the arrays of keys and values for transitioning. These are used as deps of useMemo
         // so that it will update whenever a key or value changes.
-        const animKeys = animate ? (Object.keys(animate) as string[]) : [];
-        const animValues = animate ? (Object.values(animate) as any[]) : [];
+        let animKeysSet = new Set(animate ? (Object.keys(animate) as string[]) : []);
         const values = Object.assign({}, animate);
 
         if (animateProps) {
-            animKeys.push(...Object.keys(animateProps));
-            animValues.push(...Object.values(animateProps));
+            addKeysToSet(animKeysSet, animateProps);
             Object.assign(values, animateProps);
         }
 
         if (whileTap || whileHover) {
             const { pressed, hovered } = useContext(ContextPressable);
 
-            if (whileTap) {
-                animKeys.push(...Object.keys(whileTap));
-            }
             if (whileHover) {
-                animKeys.push(...Object.keys(whileHover));
+                addKeysToSet(animKeysSet, whileHover);
+                if (hovered) {
+                    Object.assign(values, whileHover);
+                }
             }
-            if (hovered) {
-                Object.assign(values, whileHover);
-                animValues.push(...Object.values(whileHover));
-            }
-            if (pressed) {
-                Object.assign(values, whileTap);
-                animValues.push(...Object.values(whileTap));
+            if (whileTap) {
+                addKeysToSet(animKeysSet, whileTap);
+                if (pressed) {
+                    Object.assign(values, whileTap);
+                }
             }
         }
+
+        const animKeys = [...animKeysSet];
+        const animValues = animKeys.map((key) => values[key]);
 
         const update = () => {
             const anims = refAnims.current;
@@ -125,80 +131,83 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                 const key = animKeys[i];
                 const isProp = animateProps?.[key] !== undefined;
                 const value = values[key] ?? DefaultValues[key];
-                const valueInitial = (isProp ? initialProps?.[key] : initial?.[key]) ?? value ?? DefaultValues[key];
-                const isStr = isString(valueInitial);
-                const isArr = isArray(valueInitial);
 
-                // If this is the first run or it's a new key, create the Animated.Value
-                if (!anims[key]) {
-                    const startValue = isStr || isArr ? 1 : (valueInitial as number);
-                    const animValue = new Animated.Value(startValue);
-                    anims[key] = {
-                        value: valueInitial,
-                        animValue,
-                        valueInterp: isStr ? 1 : undefined,
-                    };
-                }
+                if (!anims[key] || anims[key].value !== value) {
+                    const valueInitial = (isProp ? initialProps?.[key] : initial?.[key]) ?? value ?? DefaultValues[key];
+                    const isStr = isString(valueInitial);
+                    const isArr = isArray(valueInitial);
 
-                let toValue: number;
-                // If string or array it needs to interpolate, so toggle back and forth between 0 and 1,
-                // interpolating from current value to target value
-                if (isStr || isArr) {
-                    const fromInterp = anims[key].valueInterp;
-                    const from = anims[key].value;
-                    anims[key].interpolation = anims[key].animValue.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: fromInterp === 1 ? [value, from] : [from, value],
-                    });
-                    anims[key].valueInterp = toValue = 1 - fromInterp;
-                    anims[key].value = value;
-                } else {
-                    anims[key].value = toValue = value as number;
-                }
+                    // If this is the first run or it's a new key, create the Animated.Value
+                    if (!anims[key]) {
+                        const startValue = isStr || isArr ? 1 : (valueInitial as number);
+                        const animValue = new Animated.Value(startValue);
+                        anims[key] = {
+                            value: valueInitial,
+                            animValue,
+                            valueInterp: isStr ? 1 : undefined,
+                        };
+                    }
 
-                // Get the transition for this key, the 'default' key, the root transition, or default transition if no transition prop
-                const transitionForKey: MotionTransition = transition?.[key || 'default'] || transition || DefaultTransition;
+                    let toValue: number;
+                    // If string or array it needs to interpolate, so toggle back and forth between 0 and 1,
+                    // interpolating from current value to target value
+                    if (isStr || isArr) {
+                        const fromInterp = anims[key].valueInterp;
+                        const from = anims[key].value;
+                        anims[key].interpolation = anims[key].animValue.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: fromInterp === 1 ? [value, from] : [from, value],
+                        });
+                        anims[key].valueInterp = toValue = 1 - fromInterp;
+                        anims[key].value = value;
+                    } else {
+                        anims[key].value = toValue = value as number;
+                    }
 
-                if (
-                    config.timing === 's' &&
-                    transitionForKey !== DefaultTransition &&
-                    isNumber((transitionForKey as MotionTransitionTween).duration)
-                ) {
-                    (transitionForKey as MotionTransitionTween).duration *= 1000;
-                }
+                    // Get the transition for this key, the 'default' key, the root transition, or default transition if no transition prop
+                    const transitionForKey: MotionTransition = transition?.[key || 'default'] || transition || DefaultTransition;
 
-                if (isString((transitionForKey as MotionTransitionTween).easing)) {
-                    (transitionForKey as MotionTransitionTween).easing =
-                        Eases[(transitionForKey as MotionTransitionTween).easing as unknown as EaseFunction];
-                }
-                if (isString((transitionForKey as MotionTransitionTween).ease)) {
-                    (transitionForKey as MotionTransitionTween).ease =
-                        Eases[(transitionForKey as MotionTransitionTween).ease as unknown as EaseFunction];
-                }
+                    if (
+                        config.timing === 's' &&
+                        transitionForKey !== DefaultTransition &&
+                        isNumber((transitionForKey as MotionTransitionTween).duration)
+                    ) {
+                        (transitionForKey as MotionTransitionTween).duration *= 1000;
+                    }
 
-                const animOptions = Object.assign(
-                    {
-                        toValue,
-                        useNativeDriver,
-                    },
-                    transitionForKey
-                );
+                    if (isString((transitionForKey as MotionTransitionTween).easing)) {
+                        (transitionForKey as MotionTransitionTween).easing =
+                            Eases[(transitionForKey as MotionTransitionTween).easing as unknown as EaseFunction];
+                    }
+                    if (isString((transitionForKey as MotionTransitionTween).ease)) {
+                        (transitionForKey as MotionTransitionTween).ease =
+                            Eases[(transitionForKey as MotionTransitionTween).ease as unknown as EaseFunction];
+                    }
 
-                // This typeof check is to make it work when rendered server-side like in Next.js
-                if (typeof requestAnimationFrame !== 'undefined') {
-                    requestAnimationFrame(() => {
-                        // Spring or timing based on the transition prop
-                        if (transitionForKey.type === 'spring') {
-                            Animated.spring(anims[key].animValue, animOptions).start();
-                        } else {
-                            Animated.timing(anims[key].animValue, animOptions as Animated.TimingAnimationConfig).start();
-                        }
-                    });
+                    const animOptions = Object.assign(
+                        {
+                            toValue,
+                            useNativeDriver,
+                        },
+                        transitionForKey
+                    );
+
+                    // This typeof check is to make it work when rendered server-side like in Next.js
+                    if (typeof requestAnimationFrame !== 'undefined') {
+                        requestAnimationFrame(() => {
+                            // Spring or timing based on the transition prop
+                            if (transitionForKey.type === 'spring') {
+                                Animated.spring(anims[key].animValue, animOptions).start();
+                            } else {
+                                Animated.timing(anims[key].animValue, animOptions as Animated.TimingAnimationConfig).start();
+                            }
+                        });
+                    }
                 }
             }
         };
 
-        useMemo(update, [animKeys, animValues]); // eslint-disable-line react-hooks/exhaustive-deps
+        useMemo(update, animValues); // eslint-disable-line react-hooks/exhaustive-deps
 
         // Apply the animations to the style object
         const style: StyleProp<any> = {};
