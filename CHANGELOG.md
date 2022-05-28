@@ -1,3 +1,6 @@
+## 2.1.1
+- Fix: "default" transition was not working correctly
+
 ## 2.1.0
 - Feature: Added `exit` prop along with `AnimatePresence`.  See [the example](https://www.legendapp.com/dev/motion/animate-presence).
 
