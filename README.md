@@ -25,6 +25,7 @@ import { Motion } from "@legendapp/motion"
 - ✨ Supports animating SVG and linear gradient
 - ✨ Supports transformOrigin
 - ✨ whileHover and whileTap for easy animations on touch
+- ✨ AnimatePresence for exit animations
 - ✨ 0 dependencies using the built-in Animated
 - ✨ Built for maximum performance
 - ✨ Strongly typed with TypeScript

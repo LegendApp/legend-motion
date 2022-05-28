@@ -363,14 +363,11 @@ const Examples = {
             animate={{ opacity: 1, x: 100 }}
             exit={{ opacity: 0.1, x: 0, y: 20 }}
             transition={{
-                x: {
+                default: {
                     type: 'spring',
-                    damping: 20,
-                    stiffness: 400,
                 },
                 opacity: {
                     type: 'timing',
-                    duration: 300,
                 },
             }}
         />
@@ -388,7 +385,7 @@ const Examples = {
                             animate={{ opacity: 1, x: 100 }}
                             exit={{ opacity: 0.1, x: 0, y: 10 }}
                             transition={{
-                                x: {
+                                default: {
                                     type: 'spring',
                                     damping: 20,
                                     stiffness: 400,

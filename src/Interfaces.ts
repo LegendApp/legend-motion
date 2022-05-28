@@ -75,7 +75,7 @@ export interface MotionComponentProps<
     animateProps?: TAnimateProps | (Omit<ComponentProps<T>, 'style'> & TExtraProps);
     initial?: TStyle | PropsTransforms;
     initialProps?: Omit<ComponentProps<T>, 'style'> & TExtraProps;
-    transition?: MotionTransition | MotionTransitionRecord<TAnimate | (TAnimateProps & TExtraProps)>;
+    transition?: MotionTransition | MotionTransitionRecord<TAnimate | (TAnimateProps & TExtraProps) | { default: '' }>;
     children?: ReactNode;
     onLayout?: (event: LayoutChangeEvent) => void;
     transformOrigin?: { x?: TransformOrigin; y?: TransformOrigin };

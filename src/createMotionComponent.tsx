@@ -183,7 +183,8 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                     }
 
                     // Get the transition for this key, the 'default' key, the root transition, or default transition if no transition prop
-                    const transitionForKey: MotionTransition = transition?.[key || 'default'] || transition || DefaultTransition;
+                    const transitionForKey: MotionTransition =
+                        transition?.[key] || transition?.['default'] || transition || DefaultTransition;
 
                     if (
                         config.timing === 's' &&
