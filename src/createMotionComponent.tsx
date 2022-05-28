@@ -71,11 +71,18 @@ const Eases: Record<EaseFunction, (value: number) => number> = {
     backOut: Easing.out(Easing.back(2)),
 };
 
-function addKeysToSet(set: Set<string>, obj: Record<string, any>) {
-    const keys = Object.keys(obj);
-    for (let i = 0; i < keys.length; i++) {
-        set.add(keys[i]);
+function addKeysToSet(...objs: Record<string, any>[]) {
+    const set = new Set<string>();
+    for (let i = 0; i < objs.length; i++) {
+        const obj = objs[i];
+        if (obj) {
+            const keys = Object.keys(obj);
+            for (let i = 0; i < keys.length; i++) {
+                set.add(keys[i]);
+            }
+        }
     }
+    return set;
 }
 
 export function createMotionComponent<T extends ComponentType<any>>(Component: Animated.AnimatedComponent<T> | T) {
@@ -98,7 +105,7 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
 
         // Generate the arrays of keys and values for transitioning. These are used as deps of useMemo
         // so that it will update whenever a key or value changes.
-        let animKeysSet = new Set(animate ? (Object.keys(animate) as string[]) : []);
+        const animKeysSet = addKeysToSet(initial, animate, animateProps, whileTap, whileHover, exit);
         const values = Object.assign({}, animate);
 
         if (animateProps) {
@@ -138,10 +145,13 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
             for (let i = 0; i < animKeys.length; i++) {
                 const key = animKeys[i];
                 const isProp = animateProps?.[key] !== undefined;
-                const value = values[key] ?? DefaultValues[key];
+                let value = values[key];
+                const valueInitial = (isProp ? initialProps?.[key] : initial?.[key]) ?? value ?? DefaultValues[key];
+                if (value === undefined) {
+                    value = valueInitial ?? DefaultValues[key];
+                }
 
                 if (!anims[key] || anims[key].value !== value) {
-                    const valueInitial = (isProp ? initialProps?.[key] : initial?.[key]) ?? value ?? DefaultValues[key];
                     const isStr = isString(valueInitial);
                     const isArr = isArray(valueInitial);
 
