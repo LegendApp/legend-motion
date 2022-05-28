@@ -213,11 +213,12 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
                     // This typeof check is to make it work when rendered server-side like in Next.js
                     if (typeof requestAnimationFrame !== 'undefined') {
                         requestAnimationFrame(() => {
+                            const callback = onAnimationComplete ? () => onAnimationComplete(key) : undefined;
                             // Spring or timing based on the transition prop
                             if (transitionForKey.type === 'spring') {
-                                Animated.spring(anims[key].animValue, animOptions).start();
+                                Animated.spring(anims[key].animValue, animOptions).start(callback);
                             } else {
-                                Animated.timing(anims[key].animValue, animOptions as Animated.TimingAnimationConfig).start();
+                                Animated.timing(anims[key].animValue, animOptions as Animated.TimingAnimationConfig).start(callback);
                             }
                         });
                     }
