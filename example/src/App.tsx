@@ -329,8 +329,9 @@ const Examples = {
     },
     Styled: {
         code: `
- <Motion.View
-    whileTap={{ scale: 1.1 }}
+<Motion.View
+    className="w-32 h-32 bg-blue-500 rounded-xl"
+    animate={{ x: value * 100 }}
     transition={{
         type: 'spring',
         damping: 20,
@@ -353,26 +354,39 @@ const Examples = {
     },
     Presence: {
         code: `
- <Motion.View
-    whileTap={{ scale: 1.1 }}
-    transition={{
-        type: 'spring',
-        damping: 20,
-        stiffness: 400,
-    }}
-/>
+<AnimatePresence>
+    {value ? (
+        <MotionStyled.View
+            key="A"
+            style={{ marginLeft: -100 }}
+            initial={{ opacity: 0.5, x: 0 }}
+            animate={{ opacity: 1, x: 100 }}
+            exit={{ opacity: 0.1, x: 0, y: 20 }}
+            transition={{
+                x: {
+                    type: 'spring',
+                    damping: 20,
+                    stiffness: 400,
+                },
+                opacity: {
+                    type: 'timing',
+                    duration: 300,
+                },
+            }}
+        />
+    ) : null}
+</AnimatePresence>
 `,
         Component: ({ value }: Props) => (
-            <View style={{ height: 140 }}>
+            <View style={{ height: 150 }}>
                 <AnimatePresence>
                     {value ? (
                         <MotionStyled.View
                             key="A"
-                            style={{ marginLeft: -100 }}
-                            className="w-32 h-32 bg-blue-500 rounded-xl"
+                            style={[styles.box, { marginLeft: -100 }]}
                             initial={{ opacity: 0.5, x: 0 }}
                             animate={{ opacity: 1, x: 100 }}
-                            exit={{ opacity: 0.1, x: 0, y: 20 }}
+                            exit={{ opacity: 0.1, x: 0, y: 10 }}
                             transition={{
                                 x: {
                                     type: 'spring',
