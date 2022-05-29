@@ -1,3 +1,9 @@
+## 2.1.3
+- Fix: ref was not forwarding through to component
+
+## 2.1.2
+- Fix: `onLayout` prop was not passing through to component
+
 ## 2.1.1
 - Fix: "default" transition was not working correctly
 
