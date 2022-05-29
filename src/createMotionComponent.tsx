@@ -1,5 +1,5 @@
 import { isArray, isNumber, isString } from '@legendapp/tools';
-import React, { ComponentPropsWithRef, ComponentType, useContext, useMemo, useRef } from 'react';
+import React, { ComponentPropsWithRef, ComponentType, forwardRef, Ref, useContext, useMemo, useRef } from 'react';
 import { Animated, Easing, StyleProp, StyleSheet, TransformsStyle } from 'react-native';
 import { config } from './configureMotion';
 import { DefaultTransitionTime } from './Constants';
@@ -86,21 +86,25 @@ function addKeysToSet(...objs: Record<string, any>[]) {
 }
 
 export function createMotionComponent<T extends ComponentType<any>>(Component: Animated.AnimatedComponent<T> | T) {
-    return function MotionComponent<TAnimate, TAnimateProps>({
-        animate,
-        animateProps,
-        initial,
-        initialProps,
-        exit,
-        transition,
-        transformOrigin,
-        style: styleProp,
-        onLayout: onLayoutProp,
-        whileTap,
-        whileHover,
-        onAnimationComplete,
-        ...rest
-    }: Animated.AnimatedProps<ComponentPropsWithRef<T>> & MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>) {
+    return forwardRef(function MotionComponent<TAnimate, TAnimateProps>(
+        {
+            animate,
+            animateProps,
+            initial,
+            initialProps,
+            exit,
+            transition,
+            transformOrigin,
+            style: styleProp,
+            onLayout: onLayoutProp,
+            whileTap,
+            whileHover,
+            onAnimationComplete,
+            ...rest
+        }: Animated.AnimatedProps<ComponentPropsWithRef<T>> & MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>,
+        // @ts-ignore
+        ref: Ref<InstanceType<T>>
+    ) {
         const refAnims = useRef<Partial<Record<string, AnimInfo>>>({});
 
         // Generate the arrays of keys and values for transitioning. These are used as deps of useMemo
@@ -253,8 +257,8 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
         const onLayout = transformOrigin ? useTransformOrigin(transformOrigin, style.transform, onLayoutProp) : onLayoutProp;
 
         // @ts-ignore
-        return <Component style={StyleSheet.compose(styleProp, style)} onLayout={onLayout} {...rest} {...animProps} />;
-    };
+        return <Component style={StyleSheet.compose(styleProp, style)} onLayout={onLayout} {...rest} {...animProps} ref={ref} />;
+    });
 }
 export function createMotionAnimatedComponent<T extends ComponentType<any>>(component: T) {
     return createMotionComponent(Animated.createAnimatedComponent(component));

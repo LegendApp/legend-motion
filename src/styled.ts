@@ -1,5 +1,13 @@
 import type { ComponentType } from 'react';
-import { Animated, FlatListProps, ImageProps, ScrollViewProps, SectionListProps, TextProps, ViewProps } from 'react-native';
+import {
+    Animated,
+    FlatList as RNFlatList,
+    Image as RNImage,
+    ScrollView as RNScrollView,
+    SectionList as RNSectionList,
+    Text as RNText,
+    View as RNView,
+} from 'react-native';
 // @ts-ignore
 import { styled } from 'tailwindcss-react-native';
 import { createMotionComponent } from './createMotionComponent';
@@ -10,12 +18,10 @@ interface StyledProps {
 }
 
 export namespace Motion {
-    export const View = createMotionComponent<ComponentType<ViewProps & StyledProps>>(styled(Animated.View));
-    export const Text = createMotionComponent<ComponentType<TextProps & StyledProps>>(styled(Animated.Text));
-    export const FlatList = createMotionComponent<ComponentType<FlatListProps<unknown> & StyledProps>>(styled(Animated.FlatList));
-    export const Image = createMotionComponent<ComponentType<ImageProps & StyledProps>>(styled(Animated.Image));
-    export const ScrollView = createMotionComponent<ComponentType<ScrollViewProps & StyledProps>>(styled(Animated.ScrollView));
-    export const SectionList = createMotionComponent<ComponentType<SectionListProps<unknown, unknown> & StyledProps>>(
-        styled(Animated.SectionList)
-    );
+    export const View = createMotionComponent<typeof RNView & ComponentType<StyledProps>>(styled(Animated.View));
+    export const Text = createMotionComponent<typeof RNText & ComponentType<StyledProps>>(styled(Animated.Text));
+    export const FlatList = createMotionComponent<typeof RNFlatList & ComponentType<StyledProps>>(styled(Animated.FlatList));
+    export const Image = createMotionComponent<typeof RNImage & ComponentType<StyledProps>>(styled(Animated.Image));
+    export const ScrollView = createMotionComponent<typeof RNScrollView & ComponentType<StyledProps>>(styled(Animated.ScrollView));
+    export const SectionList = createMotionComponent<typeof RNSectionList & ComponentType<StyledProps>>(styled(Animated.SectionList));
 }
