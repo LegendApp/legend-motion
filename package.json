@@ -13,7 +13,8 @@
         "./svg": "./svg.js",
         "./linear-gradient": "./linear-gradient.js",
         "./linear-gradient-expo": "./linear-gradient-expo.js",
-        "./styled": "./styled.js"
+        "./styled": "./styled.js",
+        "./package.json": "./package.json"
     },
     "files": [
         "src",
