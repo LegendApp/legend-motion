@@ -250,13 +250,10 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
             }));
         }
 
-        const layoutProps: any = {};
-        if (transformOrigin) {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            layoutProps.onLayout = useTransformOrigin(transformOrigin, style.transform, onLayoutProp);
-        }
+        const onLayout = transformOrigin ? useTransformOrigin(transformOrigin, style.transform, onLayoutProp) : onLayoutProp;
 
-        return <Component style={StyleSheet.compose(styleProp, style)} {...layoutProps} {...rest} {...animProps} />;
+        // @ts-ignore
+        return <Component style={StyleSheet.compose(styleProp, style)} onLayout={onLayout} {...rest} {...animProps} />;
     };
 }
 export function createMotionAnimatedComponent<T extends ComponentType<any>>(component: T) {
