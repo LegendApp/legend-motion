@@ -1,3 +1,6 @@
+## 2.1.4
+- Fix: forwardRef had removed the generic typing so transition was not autocompleting
+
 ## 2.1.3
 - Fix: ref was not forwarding through to component
 
