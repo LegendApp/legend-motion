@@ -1,4 +1,3 @@
-import type { ComponentType } from 'react';
 import {
     Animated,
     FlatList as RNFlatList,
@@ -18,10 +17,10 @@ interface StyledProps {
 }
 
 export namespace Motion {
-    export const View = createMotionComponent<typeof RNView & ComponentType<StyledProps>>(styled(Animated.View));
-    export const Text = createMotionComponent<typeof RNText & ComponentType<StyledProps>>(styled(Animated.Text));
-    export const FlatList = createMotionComponent<typeof RNFlatList & ComponentType<StyledProps>>(styled(Animated.FlatList));
-    export const Image = createMotionComponent<typeof RNImage & ComponentType<StyledProps>>(styled(Animated.Image));
-    export const ScrollView = createMotionComponent<typeof RNScrollView & ComponentType<StyledProps>>(styled(Animated.ScrollView));
-    export const SectionList = createMotionComponent<typeof RNSectionList & ComponentType<StyledProps>>(styled(Animated.SectionList));
+    export const View = createMotionComponent<typeof RNView, StyledProps>(styled(Animated.View));
+    export const Text = createMotionComponent<typeof RNText, StyledProps>(styled(Animated.Text));
+    export const FlatList = createMotionComponent<typeof RNFlatList, StyledProps>(styled(Animated.FlatList));
+    export const Image = createMotionComponent<typeof RNImage, StyledProps>(styled(Animated.Image));
+    export const ScrollView = createMotionComponent<typeof RNScrollView, StyledProps>(styled(Animated.ScrollView));
+    export const SectionList = createMotionComponent<typeof RNSectionList, StyledProps>(styled(Animated.SectionList));
 }

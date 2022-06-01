@@ -85,7 +85,7 @@ function addKeysToSet(...objs: Record<string, any>[]) {
     return set;
 }
 
-export function createMotionComponent<T extends ComponentType<any>>(Component: Animated.AnimatedComponent<T> | T) {
+export function createMotionComponent<T extends ComponentType<any>, TExtraProps = {}>(Component: Animated.AnimatedComponent<T> | T) {
     return forwardRef(function MotionComponent<TAnimate, TAnimateProps>(
         {
             animate,
@@ -101,7 +101,8 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
             whileHover,
             onAnimationComplete,
             ...rest
-        }: Animated.AnimatedProps<ComponentPropsWithRef<T>> & MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>,
+        }: Animated.AnimatedProps<ComponentPropsWithRef<T & TExtraProps>> &
+            MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>,
         // @ts-ignore
         ref: Ref<InstanceType<T>>
     ) {
@@ -259,7 +260,9 @@ export function createMotionComponent<T extends ComponentType<any>>(Component: A
         // @ts-ignore
         return <Component style={StyleSheet.compose(styleProp, style)} onLayout={onLayout} {...rest} {...animProps} ref={ref} />;
     }) as <TAnimate, TAnimateProps>(
-        p: Animated.AnimatedProps<ComponentPropsWithRef<T>> & MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>,
+        p: Animated.AnimatedProps<ComponentPropsWithRef<T>> &
+            TExtraProps &
+            MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>,
         // @ts-ignore
         ref: Ref<InstanceType<T>>
     ) => ReactElement;
