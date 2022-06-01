@@ -1,3 +1,6 @@
+## 2.1.5
+- Fix: Types of styled components were not correct
+
 ## 2.1.4
 - Fix: forwardRef had removed the generic typing so transition was not autocompleting
 
