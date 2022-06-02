@@ -8,7 +8,7 @@ import {
     Text as RNText,
     View as RNView,
 } from 'react-native';
-import { MotionPressable } from 'src/MotionPressable';
+import { MotionPressable } from './MotionPressable';
 // @ts-ignore
 import { styled } from 'tailwindcss-react-native';
 import { createMotionComponent } from './createMotionComponent';
