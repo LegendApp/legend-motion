@@ -1,3 +1,6 @@
+## 2.1.6
+- Feature: Added Pressable export to /styled
+
 ## 2.1.5
 - Fix: Types of styled components were not correct
 
