@@ -1,3 +1,6 @@
+## 2.1.7
+- Fix: A bad import
+
 ## 2.1.6
 - Feature: Added Pressable export to /styled
 
