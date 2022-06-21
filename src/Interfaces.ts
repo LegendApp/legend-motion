@@ -90,8 +90,8 @@ export interface PropsTransforms {
     scale?: number;
     scaleX?: number;
     scaleY?: number;
-    skewX?: number;
-    skewY?: number;
+    skewX?: `${number}deg` | `${number}rad`;
+    skewY?: `${number}deg` | `${number}rad`;
     perspective?: number;
     rotate?: `${number}deg` | `${number}rad`;
     rotateX?: `${number}deg` | `${number}rad`;
