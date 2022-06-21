@@ -93,9 +93,10 @@ export interface PropsTransforms {
     skewX?: number;
     skewY?: number;
     perspective?: number;
-    rotate?: number;
-    rotateY?: number;
-    rotateZ?: number;
+    rotate?: `${number}deg` | `${number}rad`;
+    rotateX?: `${number}deg` | `${number}rad`;
+    rotateY?: `${number}deg` | `${number}rad`;
+    rotateZ?: `${number}deg` | `${number}rad`;
     matrix?: number[];
 }
 export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;

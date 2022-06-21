@@ -32,6 +32,7 @@ const TransformKeys: Record<keyof PropsTransforms, keyof UnionToIntersection<Tra
     skewY: 'skewY',
     perspective: 'perspective',
     rotate: 'rotate',
+    rotateX: 'rotateX',
     rotateY: 'rotateY',
     rotateZ: 'rotateZ',
     matrix: 'matrix',
@@ -50,9 +51,10 @@ const DefaultValues: Record<keyof PropsTransforms | keyof typeof OtherNativeKeys
     skewX: 0,
     skewY: 0,
     perspective: 0,
-    rotate: 0,
-    rotateY: 0,
-    rotateZ: 0,
+    rotate: '0deg',
+    rotateX: '0deg',
+    rotateY: '0deg',
+    rotateZ: '0deg',
     matrix: [],
     opacity: 1,
 };
@@ -251,7 +253,7 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
         // Map the transforms into an Animated transforms array
         if (transforms.length) {
             style.transform = transforms.map(({ key, value }) => ({
-                [TransformKeys[key]]: value.animValue,
+                [TransformKeys[key]]: value.interpolation || value.animValue,
             }));
         }
 
