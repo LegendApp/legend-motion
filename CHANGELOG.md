@@ -1,5 +1,8 @@
 ## 2.1.8
-- Fix: rotate transform was not working
+- Fix: `skewX` and `skewY` types are strings
+
+## 2.1.8
+- Fix: `rotate` transform was not working
 
 ## 2.1.7
 - Fix: A bad import
