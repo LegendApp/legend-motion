@@ -1,4 +1,7 @@
-## 2.1.8
+## 2.1.10
+- Fix: Default `skew` values
+
+## 2.1.9
 - Fix: `skewX` and `skewY` types are strings
 
 ## 2.1.8
