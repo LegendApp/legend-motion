@@ -1,5 +1,5 @@
 ## 2.1.10
-- Fix: Default `skew` values
+- Fix: Default `skew` values (https://github.com/LegendApp/legend-motion/pull/6)
 
 ## 2.1.9
 - Fix: `skewX` and `skewY` types are strings
