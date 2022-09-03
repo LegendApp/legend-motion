@@ -1,3 +1,6 @@
+## 2.2.0
+- Fix: Styled components are upgraded from the older tailwindcss-react-native to NativeWind. If you were using `tailwindcss-react-native` see [the upgrade guide](https://www.nativewind.dev/guides/tailwindcss-react-native).
+
 ## 2.1.10
 - Fix: Default `skew` values (https://github.com/LegendApp/legend-motion/pull/6)
 
