@@ -9,21 +9,26 @@ import {
     View as RNView,
 } from 'react-native';
 import { MotionPressable } from './MotionPressable';
-// @ts-ignore
-import { styled } from 'tailwindcss-react-native';
+import { styled } from 'nativewind';
 import { createMotionComponent } from './createMotionComponent';
 
-interface StyledProps {
+export declare type StyledProps = {
     className?: string;
     tw?: string;
-}
+    baseClassName?: string;
+    baseTw?: string;
+};
 
 export namespace Motion {
     export const View = createMotionComponent<typeof RNView, StyledProps>(styled(Animated.View));
     export const Text = createMotionComponent<typeof RNText, StyledProps>(styled(Animated.Text));
-    export const FlatList = createMotionComponent<typeof RNFlatList, StyledProps>(styled(Animated.FlatList));
+    export const FlatList = createMotionComponent<typeof RNFlatList, StyledProps>(
+        styled(Animated.FlatList) as unknown as typeof RNFlatList
+    );
     export const Image = createMotionComponent<typeof RNImage, StyledProps>(styled(Animated.Image));
     export const ScrollView = createMotionComponent<typeof RNScrollView, StyledProps>(styled(Animated.ScrollView));
-    export const SectionList = createMotionComponent<typeof RNSectionList, StyledProps>(styled(Animated.SectionList));
+    export const SectionList = createMotionComponent<typeof RNSectionList, StyledProps>(
+        styled(Animated.SectionList) as unknown as typeof RNSectionList
+    );
     export const Pressable = styled(MotionPressable) as (props: PressableProps & StyledProps) => JSX.Element;
 }

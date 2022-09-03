@@ -1,6 +1,6 @@
-# Legend Motion
+# Legend-Motion
 
-Legend Motion is a declarative animations library for React Native, to make it easy to transition between styles without needing to manage animations.
+Legend-Motion is a declarative animations library for React Native, to make it easy to transition between styles without needing to manage animations.
 
 `npm install @legendapp/motion` or `yarn add @legendapp/motion`
 
@@ -44,7 +44,7 @@ The full documentation with live examples is on our [website](https://www.legend
 
 ---
 
-Legend Motion is created and maintained by [Jay Meistrich](https://github.com/jmeistrich) with [Legend](https://www.legendapp.com) and [Bravely](https://www.bravely.io).
+Legend-Motion is created and maintained by [Jay Meistrich](https://github.com/jmeistrich) with [Legend](https://www.legendapp.com) and [Bravely](https://www.bravely.io).
 
 <p>
     <a href="https://www.legendapp.com"><img src="https://www.legendapp.com/img/LogoTextOnWhite.png" height="56" alt="Legend" /></a>

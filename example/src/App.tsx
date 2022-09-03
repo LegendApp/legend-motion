@@ -5,7 +5,7 @@ import { MotionSvg } from '@legendapp/motion/svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
-import { styled, TailwindProvider } from 'tailwindcss-react-native';
+import { styled } from 'nativewind';
 
 configureMotion({
     styled,
@@ -378,7 +378,7 @@ const Examples = {
             <View style={{ height: 150 }}>
                 <AnimatePresence>
                     {value ? (
-                        <MotionStyled.View
+                        <Motion.View
                             key="A"
                             style={[styles.box, { marginLeft: -100 }]}
                             initial={{ opacity: 0.5, x: 0 }}
@@ -421,9 +421,7 @@ export default function App() {
                 <Text style={styles.topBarText}>{selected}</Text>
             </View>
             <View style={styles.main}>
-                <TailwindProvider>
-                    <Component value={value} />
-                </TailwindProvider>
+                <Component value={value} />
                 <Text style={styles.text}>value: {value}</Text>
             </View>
             <View style={{ flex: 1 }}>
