@@ -34,14 +34,18 @@ export type EaseFunction =
     | 'backOut'
     | 'backInOut';
 
-export interface MotionTransitionTween {
+interface Loopable {
+  loop?: number;
+}
+
+export interface MotionTransitionTween extends Loopable {
     type?: 'tween' | 'timing' | undefined;
     ease?: EaseFunction | ((value: number) => number) | undefined;
     easing?: EaseFunction | ((value: number) => number) | undefined;
     duration: number | undefined;
     delay?: number | undefined;
 }
-export interface MotionTransitionSpring {
+export interface MotionTransitionSpring extends Loopable {
     type: 'spring';
     friction?: number;
     tension?: number;

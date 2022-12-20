@@ -95,6 +95,7 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
             initial,
             initialProps,
             exit,
+            loop,
             transition,
             transformOrigin,
             style: styleProp,
@@ -222,12 +223,21 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
                     if (typeof requestAnimationFrame !== 'undefined') {
                         requestAnimationFrame(() => {
                             const callback = onAnimationComplete ? () => onAnimationComplete(key) : undefined;
+
+                            let animation;
+
                             // Spring or timing based on the transition prop
                             if (transitionForKey.type === 'spring') {
-                                Animated.spring(anims[key].animValue, animOptions).start(callback);
+                                animation = Animated.spring(anims[key].animValue, animOptions);
                             } else {
-                                Animated.timing(anims[key].animValue, animOptions as Animated.TimingAnimationConfig).start(callback);
+                                animation = Animated.timing(anims[key].animValue, animOptions as Animated.TimingAnimationConfig);
                             }
+
+                            if (loop !== undefined) {
+                                animation = Animated.loop(animation, { iterations: loop });
+                            }
+
+                            animation.start(callback);
                         });
                     }
                 }
