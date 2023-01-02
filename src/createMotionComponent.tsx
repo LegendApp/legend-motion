@@ -95,7 +95,6 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
             initial,
             initialProps,
             exit,
-            loop,
             transition,
             transformOrigin,
             style: styleProp,
@@ -223,16 +222,18 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
                     if (typeof requestAnimationFrame !== 'undefined') {
                         requestAnimationFrame(() => {
                             const callback = onAnimationComplete ? () => onAnimationComplete(key) : undefined;
+                            const { loop, type } = transitionForKey;
 
-                            let animation;
+                            let animation: Animated.CompositeAnimation;
 
                             // Spring or timing based on the transition prop
-                            if (transitionForKey.type === 'spring') {
+                            if (type === 'spring') {
                                 animation = Animated.spring(anims[key].animValue, animOptions);
                             } else {
                                 animation = Animated.timing(anims[key].animValue, animOptions as Animated.TimingAnimationConfig);
                             }
 
+                            // Loop based on the transition prop
                             if (loop !== undefined) {
                                 animation = Animated.loop(animation, { iterations: loop });
                             }
