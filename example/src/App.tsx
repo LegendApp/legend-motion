@@ -1,11 +1,11 @@
-import { Motion, configureMotion, AnimatePresence } from '@legendapp/motion';
+import { AnimatePresence, configureMotion, Motion } from '@legendapp/motion';
 import { MotionLinearGradient } from '@legendapp/motion/linear-gradient-expo';
 import { Motion as MotionStyled } from '@legendapp/motion/styled';
 import { MotionSvg } from '@legendapp/motion/svg';
-import React, { useCallback, useEffect, useState } from 'react';
+import { styled } from 'nativewind';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
-import { styled } from 'nativewind';
 
 configureMotion({
     styled,
@@ -24,7 +24,7 @@ function useInterval(cb: () => void, ms: number) {
     }, [ms, cb]);
 }
 
-const Examples = {
+const Examples: Record<string, { code: string; Component: FC<any>; disableValue?: boolean }> = {
     Simple: {
         code: `
 <Motion.View
@@ -401,6 +401,31 @@ const Examples = {
             </View>
         ),
     },
+    Loop: {
+        code: `
+<Motion.View
+    initial={{
+        x: 0
+    }}
+    animate={{
+        x: 100
+    }}
+    transition={{
+        type: 'timing',
+        duration: 1500,
+        loop: -1
+    }}
+/>`,
+        Component: ({ value }: Props) => (
+            <Motion.View
+                initial={{ x: 0 }}
+                animate={{ x: 100 }}
+                transition={{ type: 'timing', duration: 1500, loop: -1 }}
+                style={styles.box}
+            />
+        ),
+        disableValue: true,
+    },
 };
 
 export default function App() {
@@ -414,7 +439,7 @@ export default function App() {
         1800
     );
 
-    const { code, Component } = Examples[selected];
+    const { code, Component, disableValue } = Examples[selected];
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topBar}>
@@ -422,7 +447,7 @@ export default function App() {
             </View>
             <View style={styles.main}>
                 <Component value={value} />
-                <Text style={styles.text}>value: {value}</Text>
+                <Text style={styles.text}>{disableValue ? '' : `value: ${value}`}</Text>
             </View>
             <View style={{ flex: 1 }}>
                 <SyntaxHighlighter highlighter="prism" language="jsx">

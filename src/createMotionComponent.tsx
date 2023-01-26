@@ -222,12 +222,23 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
                     if (typeof requestAnimationFrame !== 'undefined') {
                         requestAnimationFrame(() => {
                             const callback = onAnimationComplete ? () => onAnimationComplete(key) : undefined;
+                            const { loop, type } = transitionForKey;
+
+                            let animation: Animated.CompositeAnimation;
+
                             // Spring or timing based on the transition prop
-                            if (transitionForKey.type === 'spring') {
-                                Animated.spring(anims[key].animValue, animOptions).start(callback);
+                            if (type === 'spring') {
+                                animation = Animated.spring(anims[key].animValue, animOptions);
                             } else {
-                                Animated.timing(anims[key].animValue, animOptions as Animated.TimingAnimationConfig).start(callback);
+                                animation = Animated.timing(anims[key].animValue, animOptions as Animated.TimingAnimationConfig);
                             }
+
+                            // Loop based on the transition prop
+                            if (loop !== undefined) {
+                                animation = Animated.loop(animation, { iterations: loop });
+                            }
+
+                            animation.start(callback);
                         });
                     }
                 }
