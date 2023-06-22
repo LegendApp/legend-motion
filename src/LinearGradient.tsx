@@ -1,15 +1,16 @@
-import { isArray, MemoFnComponent } from '@legendapp/tools';
+import { isArray } from '@legendapp/tools';
+import { MemoFnComponent } from '@legendapp/tools/react';
 import React, { Component, ComponentClass } from 'react';
 import type { ViewProps, ViewStyle } from 'react-native';
 import { createMotionAnimatedComponent } from './createMotionComponent';
 import type { MotionComponentProps } from './Interfaces';
 
-export declare type LinearGradientPoint = {
+export type LinearGradientPoint = {
     x: number;
     y: number;
 };
 
-export declare type LinearGradientProps = ViewProps & {
+export type LinearGradientProps = ViewProps & {
     colors?: string[];
     locations?: number[] | null;
     start?: LinearGradientPoint | null;
@@ -72,8 +73,17 @@ function pointToXY(props: PropsGradient, point: LinearGradientPoint, name: strin
 
 // Create MotionLinearGradient with the same API as other Motion components, but it's more complicated because it needs to
 // transform to a different set of props into the AnimatedGradientHelper.
-const MotionLinearGradient = MemoFnComponent(function <TAnimate, TAnimateProps extends Partial<Omit<LinearGradientProps, 'locations' | 'style'>>>(
-    props: MotionComponentProps<ComponentClass<Omit<LinearGradientProps, 'locations'>>, ViewStyle, TAnimate, TAnimateProps, Omit<LinearGradientProps, 'locations' | 'style'>> &
+const MotionLinearGradient = MemoFnComponent(function <
+    TAnimate,
+    TAnimateProps extends Partial<Omit<LinearGradientProps, 'locations' | 'style'>>
+>(
+    props: MotionComponentProps<
+        ComponentClass<Omit<LinearGradientProps, 'locations'>>,
+        ViewStyle,
+        TAnimate,
+        TAnimateProps,
+        Omit<LinearGradientProps, 'locations' | 'style'>
+    > &
         LinearGradientProps
 ) {
     const { colors, animateProps, start, end, initialProps, ...propsOut } = props;

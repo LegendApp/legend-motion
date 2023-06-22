@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { isString } from '@legendapp/tools';
+import { useEverHadValue } from '@legendapp/tools/react';
 import { useCallback, useState } from 'react';
 import type { LayoutChangeEvent } from 'react-native';
 import type { TransformOrigin } from './Interfaces';
-import { useEverHadValue, isString } from '@legendapp/tools';
 
 function computeOrigin(val: TransformOrigin, size: number) {
     const isStr = isString(val);

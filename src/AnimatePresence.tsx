@@ -1,4 +1,5 @@
-import { arrayRemove, isString, useForceRender, usePrevious } from '@legendapp/tools';
+import { arrayRemove, isString } from '@legendapp/tools';
+import { useForceRender, usePrevious } from '@legendapp/tools/react';
 import React, { Children, cloneElement, Key, ReactElement, ReactNode, useRef } from 'react';
 
 interface Props {
