@@ -1,6 +1,6 @@
 import { isArray, isNumber, isString } from '@legendapp/tools';
 import React, { ComponentPropsWithRef, ComponentType, forwardRef, ReactElement, Ref, useContext, useMemo, useRef } from 'react';
-import { Animated, Easing, StyleProp, StyleSheet, TransformsStyle } from 'react-native';
+import { Animated, Easing, StyleProp, TransformsStyle } from 'react-native';
 import { config } from './configureMotion';
 import { DefaultTransitionTime } from './Constants';
 import type {
@@ -271,7 +271,7 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
         const onLayout = transformOrigin ? useTransformOrigin(transformOrigin, style.transform, onLayoutProp) : onLayoutProp;
 
         // @ts-ignore
-        return <Component style={StyleSheet.compose(styleProp, style)} onLayout={onLayout} {...rest} {...animProps} ref={ref} />;
+        return <Component style={[styleProp, style]} onLayout={onLayout} {...rest} {...animProps} ref={ref} />;
     }) as <TAnimate, TAnimateProps>(
         p: Animated.AnimatedProps<ComponentPropsWithRef<T>> &
             TExtraProps &
