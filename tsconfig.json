@@ -1,30 +1,34 @@
 {
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@legendapp/motion": ["./src"]
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@legendapp/motion": [
+                "./src"
+            ]
+        },
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "lib": [
+            "esnext"
+        ],
+        "module": "esnext",
+        "moduleResolution": "node",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
+        "noImplicitUseStrict": false,
+        "noStrictGenericChecks": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "strict": false,
+        "target": "esnext"
     },
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "esModuleInterop": true,
-    "importsNotUsedAsValues": "error",
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
-    "lib": ["esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noImplicitUseStrict": false,
-    "noStrictGenericChecks": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "target": "esnext"
-  },
-  "exclude": [
-      "example"
-  ]
+    "exclude": [
+        "example",
+        "node_modules"
+    ]
 }

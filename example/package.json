@@ -25,7 +25,7 @@
         "react-native-syntax-highlighter": "^2.1.0",
         "react-native-web": "^0.18",
         "tailwindcss": "^3.1.8",
-        "nativewind": "^2.0.11"
+        "nativewind": "^4"
     },
     "devDependencies": {
         "@babel/core": "^7.12.9",

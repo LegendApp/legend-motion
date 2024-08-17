@@ -9,6 +9,7 @@ import {
     View as RNView,
 } from 'react-native';
 import { MotionPressable } from './MotionPressable';
+// @ts-ignore This was there in v2 but not in v4
 import { styled } from 'nativewind';
 import { createMotionComponent } from './createMotionComponent';
 
