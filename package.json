@@ -9,6 +9,9 @@
     "react-native": "src/",
     "source": "src/",
     "exports": {
+        "require": "lib/commonjs/",
+        "import": "lib/module/",
+        "types": "index.d.ts",
         ".": "./index.js",
         "./svg": "./svg.js",
         "./linear-gradient": "./linear-gradient.js",
