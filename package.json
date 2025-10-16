@@ -81,11 +81,14 @@
         "expo-modules-core": "*",
         "husky": "^7.0.4",
         "jest": "^27.5.1",
+        "nativewind": ">=4.0.0",
         "pod-install": "^0.1.0",
         "prettier": "^2.0.5",
         "react-native-builder-bob": "^0.18.0",
         "react-native-linear-gradient": "^2.5.6",
         "react-native-svg": "^12.3.0",
+        "react-native": "^0.82.0",
+        "react": "^19.2.0",
         "release-it": "^14.2.2",
         "typescript": "^5.9.3"
     },
@@ -93,9 +96,9 @@
         "@legendapp/tools": "2.0.1"
     },
     "peerDependencies": {
-        "react": ">19.2.0",
-        "react-native": "0.82.0",
-        "nativewind": "4.2.1"
+        "react": ">=16",
+        "react-native": "*",
+        "nativewind": ">=4.0.0"
     },
     "jest": {
         "preset": "react-native",
