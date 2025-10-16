@@ -1,3 +1,16 @@
+## 2.5.0
+- Fix: Type issues in the latest React Native versions
+- Fix: styled exports for latest Nativewind
+
+## 2.5.0
+- Fix: update peerDependency for nativewind to support 4.x
+
+## 2.3.0
+- Fix: StyleSheet warnings on web
+
+## 2.2.1
+- Feat: Add `loop` parameter
+
 ## 2.2.0
 - Fix: Styled components are upgraded from the older tailwindcss-react-native to NativeWind. If you were using `tailwindcss-react-native` see [the upgrade guide](https://www.nativewind.dev/guides/tailwindcss-react-native).
 
