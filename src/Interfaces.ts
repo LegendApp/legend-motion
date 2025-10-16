@@ -2,14 +2,14 @@ import type {
     ComponentClass,
     ComponentProps,
     ComponentType,
+    ElementType,
     FunctionComponent,
-    JSXElementConstructor,
     PropsWithChildren,
     ReactNode,
 } from 'react';
 import type { ImageStyle, LayoutChangeEvent, StyleProp, TextStyle, ViewStyle } from 'react-native';
 
-export type ComponentStyle<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+export type ComponentStyle<T extends ElementType> =
     ComponentProps<T>['style'] extends StyleProp<infer P> ? P : ComponentProps<T>['style'];
 
 export type StyledProps<P> = PropsWithChildren<

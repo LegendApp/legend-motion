@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useState } from 'react';
-import { Platform, Pressable, PressableProps } from 'react-native';
+import { Platform, Pressable, PressableProps, PressableStateCallbackType } from 'react-native';
 
 export const ContextPressable = createContext({ pressed: false, hovered: false });
 
@@ -46,7 +46,14 @@ export function MotionPressable(props: PressableProps) {
             }
             {...rest}
         >
-            <ContextPressable.Provider value={state}>{children}</ContextPressable.Provider>
+            {(pressableState: PressableStateCallbackType) => {
+                const renderedChildren =
+                    typeof children === 'function'
+                        ? (children as (state: PressableStateCallbackType) => React.ReactNode)(pressableState)
+                        : children;
+
+                return <ContextPressable.Provider value={state}>{renderedChildren}</ContextPressable.Provider>;
+            }}
         </Pressable>
     );
 }

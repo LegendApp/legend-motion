@@ -8,6 +8,7 @@ import {
     Text as RNText,
     View as RNView,
 } from 'react-native';
+import React from 'react';
 import { MotionPressable } from './MotionPressable';
 // @ts-ignore This was there in v2 but not in v4
 import { styled } from 'nativewind';
@@ -31,5 +32,5 @@ export namespace Motion {
     export const SectionList = createMotionComponent<typeof RNSectionList, StyledProps>(
         styled(Animated.SectionList) as unknown as typeof RNSectionList
     );
-    export const Pressable = styled(MotionPressable) as (props: PressableProps & StyledProps) => JSX.Element;
+    export const Pressable = styled(MotionPressable) as (props: PressableProps & StyledProps) => React.ReactElement;
 }

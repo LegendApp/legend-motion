@@ -1,10 +1,12 @@
 import { isArray, isNumber, isString } from '@legendapp/tools';
 import React, {
-    ComponentPropsWithRef,
+    ComponentProps,
+    ComponentRef,
     ComponentType,
+    ForwardRefExoticComponent,
     forwardRef,
+    PropsWithoutRef,
     ReactElement,
-    Ref,
     RefAttributes,
     useContext,
     useMemo,
@@ -97,8 +99,27 @@ function addKeysToSet(...objs: Record<string, any>[]) {
     return set;
 }
 
-export function createMotionComponent<T extends ComponentType<any>, TExtraProps = {}>(Component: Animated.AnimatedComponent<T> | T) {
-    return forwardRef(function MotionComponent<TAnimate, TAnimateProps>(
+type MotionComponentBaseProps<TComponent extends ComponentType<any>, TExtraProps> = ComponentProps<TComponent> &
+    TExtraProps &
+    MotionComponentProps<TComponent, ComponentStyle<TComponent>, any, any, TExtraProps>;
+
+type MotionComponentWithGenerics<TComponent extends ComponentType<any>, TExtraProps> = ForwardRefExoticComponent<
+    PropsWithoutRef<MotionComponentBaseProps<TComponent, TExtraProps>> & RefAttributes<ComponentRef<TComponent>>
+> & {
+    <TAnimate = unknown, TAnimateProps = unknown>(
+        props: ComponentProps<TComponent> &
+            TExtraProps &
+            MotionComponentProps<TComponent, ComponentStyle<TComponent>, TAnimate, TAnimateProps, TExtraProps>
+    ): ReactElement | null;
+};
+
+export function createMotionComponent<T extends ComponentType<any>, TExtraProps = {}>(
+    Component: Animated.AnimatedComponent<T> | T
+): MotionComponentWithGenerics<T, TExtraProps> {
+    type BaseProps = ComponentProps<T> & TExtraProps;
+    type ForwardProps = BaseProps & MotionComponentProps<T, ComponentStyle<T>, any, any, TExtraProps>;
+
+    const MotionComponent = forwardRef<ComponentRef<T>, ForwardProps>(function MotionComponent(
         {
             animate,
             animateProps,
@@ -113,42 +134,55 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
             whileHover,
             onAnimationComplete,
             ...rest
-        }: Animated.AnimatedProps<ComponentPropsWithRef<T & TExtraProps>> &
-            MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps>,
-        // @ts-ignore
-        ref: Ref<InstanceType<T>>
+        },
+        ref
     ) {
         const refAnims = useRef<Partial<Record<string, AnimInfo>>>({});
 
         // Generate the arrays of keys and values for transitioning. These are used as deps of useMemo
         // so that it will update whenever a key or value changes.
-        const animKeysSet = addKeysToSet(initial, animate, animateProps, whileTap, whileHover, exit);
-        const values = Object.assign({}, animate);
+        const animateRecord = animate as Record<string, any> | undefined;
+        const animatePropsRecord = animateProps as Record<string, any> | undefined;
+        const initialRecord = initial as Record<string, any> | undefined;
+        const initialPropsRecord = initialProps as Record<string, any> | undefined;
+        const whileTapRecord = whileTap as Record<string, any> | undefined;
+        const whileHoverRecord = whileHover as Record<string, any> | undefined;
+        const exitRecord = exit as Record<string, any> | undefined;
 
-        if (animateProps) {
-            addKeysToSet(animKeysSet, animateProps);
-            Object.assign(values, animateProps);
+        const animKeysSet = addKeysToSet(
+            initialRecord || {},
+            animateRecord || {},
+            animatePropsRecord || {},
+            whileTapRecord || {},
+            whileHoverRecord || {},
+            exitRecord || {}
+        );
+        const values: Record<string, any> = Object.assign({}, animateRecord ?? {});
+
+        if (animatePropsRecord) {
+            addKeysToSet(animKeysSet, animatePropsRecord);
+            Object.assign(values, animatePropsRecord);
         }
 
         if (whileTap || whileHover) {
             const { pressed, hovered } = useContext(ContextPressable);
 
-            if (whileHover) {
-                addKeysToSet(animKeysSet, whileHover);
+            if (whileHoverRecord) {
+                addKeysToSet(animKeysSet, whileHoverRecord);
                 if (hovered) {
-                    Object.assign(values, whileHover);
+                    Object.assign(values, whileHoverRecord);
                 }
             }
-            if (whileTap) {
-                addKeysToSet(animKeysSet, whileTap);
+            if (whileTapRecord) {
+                addKeysToSet(animKeysSet, whileTapRecord);
                 if (pressed) {
-                    Object.assign(values, whileTap);
+                    Object.assign(values, whileTapRecord);
                 }
             }
         }
 
-        if (exit) {
-            addKeysToSet(animKeysSet, exit);
+        if (exitRecord) {
+            addKeysToSet(animKeysSet, exitRecord);
         }
 
         const animKeys = [...animKeysSet];
@@ -157,13 +191,14 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
         const update = () => {
             const anims = refAnims.current;
 
-            const useNativeDriver = !animateProps && animKeys.every((key) => !!OtherNativeKeys[key] || !!TransformKeys[key]);
+            const useNativeDriver =
+                !animatePropsRecord && animKeys.every((key) => !!OtherNativeKeys[key] || !!TransformKeys[key]);
 
             for (let i = 0; i < animKeys.length; i++) {
                 const key = animKeys[i];
-                const isProp = animateProps?.[key] !== undefined;
+                const isProp = animatePropsRecord?.[key] !== undefined;
                 let value = values[key];
-                const valueInitial = (isProp ? initialProps?.[key] : initial?.[key]) ?? value ?? DefaultValues[key];
+                const valueInitial = (isProp ? initialPropsRecord?.[key] : initialRecord?.[key]) ?? value ?? DefaultValues[key];
                 if (value === undefined) {
                     value = valueInitial ?? DefaultValues[key];
                 }
@@ -259,10 +294,10 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
 
         // Apply the animations to the style object
         const style: StyleProp<any> = {};
-        const animProps = {};
+        const animProps: Record<string, any> = {};
         const transforms: { key: string; value: AnimInfo }[] = [];
         Object.entries(refAnims.current).forEach(([key, value]) => {
-            if (animateProps?.[key] !== undefined) {
+            if (animatePropsRecord?.[key] !== undefined) {
                 animProps[key] = value.interpolation || value.animValue;
             } else if (TransformKeys[key]) {
                 transforms.push({ key, value });
@@ -282,12 +317,9 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
 
         // @ts-ignore
         return <Component style={[styleProp, style]} onLayout={onLayout} {...rest} {...animProps} ref={ref} />;
-    }) as <TAnimate, TAnimateProps>(
-        props: Animated.AnimatedProps<ComponentPropsWithRef<T>> &
-            TExtraProps &
-            MotionComponentProps<T, ComponentStyle<T>, TAnimate, TAnimateProps> &
-            RefAttributes<InstanceType<T>>
-    ) => ReactElement;
+    });
+
+    return MotionComponent as MotionComponentWithGenerics<T, TExtraProps>;
 }
 export function createMotionAnimatedComponent<T extends ComponentType<any>>(component: T) {
     return createMotionComponent(Animated.createAnimatedComponent(component));
