@@ -12,9 +12,8 @@
         "test": "jest"
     },
     "dependencies": {
-        "@expo/webpack-config": "^0.16.24",
-        "@types/react": "~19.1.10",
-        "electron": "^18.2.4",
+        "@expo/webpack-config": "^0.16.27",
+        "@types/react": "~19.1.17",
         "expo": "^54.0.0",
         "expo-linear-gradient": "~15.0.7",
         "expo-splash-screen": "~31.0.10",
@@ -30,11 +29,11 @@
     },
     "devDependencies": {
         "@babel/core": "^7.26.0",
-        "@babel/runtime": "^7.9.6",
-        "babel-loader": "^8.2.4",
-        "babel-plugin-module-resolver": "^4.0.0",
+        "@babel/runtime": "^7.28.4",
+        "babel-loader": "^8.4.1",
+        "babel-plugin-module-resolver": "^5.0.2",
         "babel-preset-expo": "~54.0.0",
-        "prettier-plugin-tailwindcss": "^0.5.11",
+        "prettier-plugin-tailwindcss": "^0.7.0",
         "typescript": "~5.9.2"
     },
     "resolutions": {
