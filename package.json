@@ -71,8 +71,8 @@
         "@react-native-community/eslint-config": "^3.0.1",
         "@release-it/conventional-changelog": "^4.3.0",
         "@types/jest": "^27.0.3",
-        "@types/react": "^17.0.37",
-        "@types/react-native": "0.66.6",
+        "@types/react": "^19.2.2",
+        "@types/react-native": "0.72.6",
         "commitlint": "^16.2.3",
         "eslint": "^8.13.0",
         "eslint-config-prettier": "^8.5.0",
@@ -87,15 +87,15 @@
         "react-native-linear-gradient": "^2.5.6",
         "react-native-svg": "^12.3.0",
         "release-it": "^14.2.2",
-        "typescript": "^5.5.2"
+        "typescript": "^5.9.3"
     },
     "dependencies": {
         "@legendapp/tools": "2.0.1"
     },
     "peerDependencies": {
-        "react": ">=16",
-        "react-native": "*",
-        "nativewind": "*"
+        "react": ">19.2.0",
+        "react-native": "0.82.0",
+        "nativewind": "4.2.1"
     },
     "jest": {
         "preset": "react-native",
@@ -161,7 +161,8 @@
         "output": "lib",
         "targets": [
             "commonjs",
-            "module", [
+            "module",
+            [
                 "typescript",
                 {
                     "project": "tsconfig.build.json"
