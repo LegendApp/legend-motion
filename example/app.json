@@ -7,10 +7,19 @@
         "description": "Example app for @legendapp/motion",
         "privacy": "public",
         "version": "1.0.0",
-        "platforms": ["ios", "android", "web"],
+        "platforms": [
+            "ios",
+            "android",
+            "web"
+        ],
         "ios": {
             "supportsTablet": true
         },
-        "assetBundlePatterns": ["**/*"]
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "web": {
+            "bundler": "metro"
+        }
     }
 }

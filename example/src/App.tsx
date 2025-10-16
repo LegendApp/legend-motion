@@ -1,4 +1,5 @@
-import { AnimatePresence, configureMotion, Motion } from '@legendapp/motion';
+import '../global.css';
+import { AnimatePresence, Motion } from '@legendapp/motion';
 import { MotionLinearGradient } from '@legendapp/motion/linear-gradient-expo';
 import { Motion as MotionStyled } from '@legendapp/motion/styled';
 import { MotionSvg } from '@legendapp/motion/svg';

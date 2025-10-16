@@ -191,8 +191,7 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
         const update = () => {
             const anims = refAnims.current;
 
-            const useNativeDriver =
-                !animatePropsRecord && animKeys.every((key) => !!OtherNativeKeys[key] || !!TransformKeys[key]);
+            const useNativeDriver = !animatePropsRecord && animKeys.every((key) => !!OtherNativeKeys[key] || !!TransformKeys[key]);
 
             for (let i = 0; i < animKeys.length; i++) {
                 const key = animKeys[i];

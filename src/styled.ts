@@ -1,36 +1,20 @@
-import {
-    Animated,
-    FlatList as RNFlatList,
-    Image as RNImage,
-    PressableProps,
-    ScrollView as RNScrollView,
-    SectionList as RNSectionList,
-    Text as RNText,
-    View as RNView,
-} from 'react-native';
-import React from 'react';
-import { MotionPressable } from './MotionPressable';
-// @ts-ignore This was there in v2 but not in v4
-import { styled } from 'nativewind';
-import { createMotionComponent } from './createMotionComponent';
+import type { ForwardRefExoticComponent } from 'react';
+import { Motion as BaseMotion } from './AnimatedComponents';
 
-export declare type StyledProps = {
+export type StyledProps = {
     className?: string;
-    tw?: string;
-    baseClassName?: string;
-    baseTw?: string;
 };
 
-export namespace Motion {
-    export const View = createMotionComponent<typeof RNView, StyledProps>(styled(Animated.View));
-    export const Text = createMotionComponent<typeof RNText, StyledProps>(styled(Animated.Text));
-    export const FlatList = createMotionComponent<typeof RNFlatList, StyledProps>(
-        styled(Animated.FlatList) as unknown as typeof RNFlatList
-    );
-    export const Image = createMotionComponent<typeof RNImage, StyledProps>(styled(Animated.Image));
-    export const ScrollView = createMotionComponent<typeof RNScrollView, StyledProps>(styled(Animated.ScrollView));
-    export const SectionList = createMotionComponent<typeof RNSectionList, StyledProps>(
-        styled(Animated.SectionList) as unknown as typeof RNSectionList
-    );
-    export const Pressable = styled(MotionPressable) as (props: PressableProps & StyledProps) => React.ReactElement;
-}
+type WithStyledProps<P> = P extends object ? P & StyledProps : P;
+
+type WithClassName<T> = T extends ForwardRefExoticComponent<infer P>
+    ? T & ForwardRefExoticComponent<WithStyledProps<P>>
+    : T extends (props: infer P) => infer R
+    ? T & ((props: WithStyledProps<P>) => R)
+    : T;
+
+type MotionWithClassName = {
+    [K in keyof typeof BaseMotion]: WithClassName<(typeof BaseMotion)[K]>;
+};
+
+export const Motion = BaseMotion as MotionWithClassName;
