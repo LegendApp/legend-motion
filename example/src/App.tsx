@@ -2,14 +2,10 @@ import { AnimatePresence, configureMotion, Motion } from '@legendapp/motion';
 import { MotionLinearGradient } from '@legendapp/motion/linear-gradient-expo';
 import { Motion as MotionStyled } from '@legendapp/motion/styled';
 import { MotionSvg } from '@legendapp/motion/svg';
-import { styled } from 'nativewind';
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import React, { type FC, useCallback, useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
 
-configureMotion({
-    styled,
-});
 interface Props {
     value: number;
 }
@@ -450,7 +446,7 @@ export default function App() {
                 <Text style={styles.text}>{disableValue ? '' : `value: ${value}`}</Text>
             </View>
             <View style={{ flex: 1 }}>
-                <SyntaxHighlighter highlighter="prism" language="jsx">
+                <SyntaxHighlighter highlighter="prism" language="jsx" PreTag={ScrollView} CodeTag={ScrollView}>
                     {code}
                 </SyntaxHighlighter>
             </View>
