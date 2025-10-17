@@ -9,14 +9,36 @@
     "react-native": "src/",
     "source": "src/",
     "exports": {
-        "require": "lib/commonjs/",
-        "import": "lib/module/",
-        "types": "index.d.ts",
-        ".": "./index.js",
-        "./svg": "./svg.js",
-        "./linear-gradient": "./linear-gradient.js",
-        "./linear-gradient-expo": "./linear-gradient-expo.js",
-        "./styled": "./styled.js",
+        ".": {
+            "types": "./index.d.ts",
+            "import": "./lib/module/index.js",
+            "require": "./lib/commonjs/index.js",
+            "default": "./index.js"
+        },
+        "./svg": {
+            "types": "./svg.d.ts",
+            "import": "./lib/module/svg.js",
+            "require": "./lib/commonjs/svg.js",
+            "default": "./svg.js"
+        },
+        "./linear-gradient": {
+            "types": "./linear-gradient.d.ts",
+            "import": "./lib/module/linear-gradient.js",
+            "require": "./lib/commonjs/linear-gradient.js",
+            "default": "./linear-gradient.js"
+        },
+        "./linear-gradient-expo": {
+            "types": "./linear-gradient-expo.d.ts",
+            "import": "./lib/module/linear-gradient-expo.js",
+            "require": "./lib/commonjs/linear-gradient-expo.js",
+            "default": "./linear-gradient-expo.js"
+        },
+        "./styled": {
+            "types": "./styled.d.ts",
+            "import": "./lib/module/styled.js",
+            "require": "./lib/commonjs/styled.js",
+            "default": "./styled.js"
+        },
         "./package.json": "./package.json"
     },
     "files": [
