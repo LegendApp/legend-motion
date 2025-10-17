@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import '../global.css';
 import { AnimatePresence, Motion } from '@legendapp/motion';
 import { MotionLinearGradient } from '@legendapp/motion/linear-gradient-expo';
@@ -413,7 +414,7 @@ const Examples: Record<string, { code: string; Component: FC<any>; disableValue?
         loop: -1
     }}
 />`,
-        Component: ({ value }: Props) => (
+        Component: () => (
             <Motion.View
                 initial={{ x: 0 }}
                 animate={{ x: 100 }}

@@ -3,7 +3,6 @@ import React, {
     ComponentProps,
     ComponentRef,
     ComponentType,
-    ForwardRefExoticComponent,
     forwardRef,
     PropsWithoutRef,
     ReactElement,
@@ -103,15 +102,16 @@ type MotionComponentBaseProps<TComponent extends ComponentType<any>, TExtraProps
     TExtraProps &
     MotionComponentProps<TComponent, ComponentStyle<TComponent>, any, any, TExtraProps>;
 
-type MotionComponentWithGenerics<TComponent extends ComponentType<any>, TExtraProps> = ForwardRefExoticComponent<
-    PropsWithoutRef<MotionComponentBaseProps<TComponent, TExtraProps>> & RefAttributes<ComponentRef<TComponent>>
-> & {
-    <TAnimate = unknown, TAnimateProps = unknown>(
-        props: ComponentProps<TComponent> &
-            TExtraProps &
-            MotionComponentProps<TComponent, ComponentStyle<TComponent>, TAnimate, TAnimateProps, TExtraProps>
-    ): ReactElement | null;
-};
+type MotionComponentWithGenerics<TComponent extends ComponentType<any>, TExtraProps> = PropsWithoutRef<
+    MotionComponentBaseProps<TComponent, TExtraProps>
+> &
+    RefAttributes<ComponentRef<TComponent>> & {
+        <TAnimate = unknown, TAnimateProps = unknown>(
+            props: ComponentProps<TComponent> &
+                TExtraProps &
+                MotionComponentProps<TComponent, ComponentStyle<TComponent>, TAnimate, TAnimateProps, TExtraProps>
+        ): ReactElement | null;
+    };
 
 export function createMotionComponent<T extends ComponentType<any>, TExtraProps = {}>(
     Component: Animated.AnimatedComponent<T> | T
@@ -165,6 +165,7 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
         }
 
         if (whileTap || whileHover) {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const { pressed, hovered } = useContext(ContextPressable);
 
             if (whileHoverRecord) {
@@ -312,13 +313,14 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
             }));
         }
 
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const onLayout = transformOrigin ? useTransformOrigin(transformOrigin, style.transform, onLayoutProp) : onLayoutProp;
 
         // @ts-ignore
         return <Component style={[styleProp, style]} onLayout={onLayout} {...rest} {...animProps} ref={ref} />;
     });
 
-    return MotionComponent as MotionComponentWithGenerics<T, TExtraProps>;
+    return MotionComponent as any;
 }
 export function createMotionAnimatedComponent<T extends ComponentType<any>>(component: T) {
     return createMotionComponent(Animated.createAnimatedComponent(component));
