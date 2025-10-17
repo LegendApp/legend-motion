@@ -1,6 +1,6 @@
 {
     "name": "@legendapp/motion",
-    "version": "2.5.1",
+    "version": "2.5.2",
     "description": "legend-motion",
     "sideEffects": false,
     "main": "lib/commonjs/",
