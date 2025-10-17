@@ -90,8 +90,8 @@ function addKeysToSet(...objs: Record<string, any>[]) {
         const obj = objs[i];
         if (obj) {
             const keys = Object.keys(obj);
-            for (let i = 0; i < keys.length; i++) {
-                set.add(keys[i]);
+            for (let u = 0; u < keys.length; u++) {
+                set.add(keys[u]);
             }
         }
     }
@@ -235,8 +235,7 @@ export function createMotionComponent<T extends ComponentType<any>, TExtraProps 
                     }
 
                     // Get the transition for this key, the 'default' key, the root transition, or default transition if no transition prop
-                    const transitionForKey: MotionTransition =
-                        transition?.[key] || transition?.['default'] || transition || DefaultTransition;
+                    const transitionForKey: MotionTransition = transition?.[key] || transition?.default || transition || DefaultTransition;
 
                     if (
                         config.timing === 's' &&
