@@ -11,33 +11,28 @@
     "exports": {
         ".": {
             "types": "./index.d.ts",
-            "import": "./lib/module/index.js",
-            "require": "./lib/commonjs/index.js",
-            "default": "./index.js"
+            "import": "./index.js",
+            "require": "./index.js"
         },
         "./svg": {
             "types": "./svg.d.ts",
-            "import": "./lib/module/svg.js",
-            "require": "./lib/commonjs/svg.js",
-            "default": "./svg.js"
+            "import": "./svg.js",
+            "require": "./svg.js"
         },
         "./linear-gradient": {
             "types": "./linear-gradient.d.ts",
-            "import": "./lib/module/linear-gradient.js",
-            "require": "./lib/commonjs/linear-gradient.js",
-            "default": "./linear-gradient.js"
+            "import": "./linear-gradient.js",
+            "require": "./linear-gradient.js"
         },
         "./linear-gradient-expo": {
             "types": "./linear-gradient-expo.d.ts",
-            "import": "./lib/module/linear-gradient-expo.js",
-            "require": "./lib/commonjs/linear-gradient-expo.js",
-            "default": "./linear-gradient-expo.js"
+            "import": "./linear-gradient-expo.js",
+            "require": "./linear-gradient-expo.js"
         },
         "./styled": {
             "types": "./styled.d.ts",
-            "import": "./lib/module/styled.js",
-            "require": "./lib/commonjs/styled.js",
-            "default": "./styled.js"
+            "import": "./styled.js",
+            "require": "./styled.js"
         },
         "./package.json": "./package.json"
     },
